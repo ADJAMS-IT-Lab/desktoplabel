@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="right"
+    android:paddingLeft="10px"
+    android:paddingRight="10px"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    
+	<TextView  
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="@string/app_nueva" 
+    	android:paddingBottom="5px"
+    	android:textSize="32dp" />
+	    
+	<TextView  
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="@string/nueva_texto" 
+    	android:paddingBottom="10px" />
+    	
+	<LinearLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:orientation="horizontal"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+    	android:paddingBottom="5px" >
+	    
+		<TextView  
+		    android:layout_width="80dp" 
+		    android:layout_height="wrap_content" 
+		    android:text="@string/etiqueta_caption"  />
+    	
+	    <EditText
+	    	android:id="@+id/etiqueta" 
+	        android:layout_width="fill_parent" 
+	        android:layout_height="wrap_content"
+	        android:lines="1" />
+ 
+ 	</LinearLayout>
+ 	
+	<LinearLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:orientation="horizontal"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+    	android:paddingBottom="5px" >
+	    
+		<TextView  
+		    android:layout_width="80px" 
+		    android:layout_height="wrap_content" 
+		    android:text="@string/mostrar_icono"  />
+    	
+ 		<Spinner
+ 			android:id="@+id/spinnerMostrarIcono"
+ 			android:layout_width="fill_parent"
+ 			android:layout_height="wrap_content" />
+ 			
+	</LinearLayout>
+ 	
+	<LinearLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:orientation="horizontal"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+    	android:paddingBottom="5px" >
+	    
+		<TextView  
+		    android:layout_width="80dp" 
+		    android:layout_height="wrap_content" 
+		    android:text="@string/icono_caption" />
+    	
+	    <Button
+	    	android:id="@+id/botonImagenMenos"
+	        android:layout_width="50dp"
+	        android:layout_height="wrap_content"
+	        android:text="&lt;"  /> 
+	    	
+		<ImageView 
+			android:id="@+id/imagenWidgetConfig"
+			android:layout_width="62dp"
+			android:layout_height="42dp"
+	    	android:gravity="center_vertical|center_horizontal"
+	        android:scaleType="fitCenter"
+	        android:src="@drawable/icono001" />
+ 
+	    <Button
+	    	android:id="@+id/botonImagenMas"
+	        android:layout_width="50dp"
+	        android:layout_height="wrap_content"
+	        android:text="&gt;" />
+	    	
+ 	</LinearLayout>
+ 	
+	<LinearLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:orientation="horizontal"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+    	android:paddingBottom="5px" >
+	    
+		<TextView  
+		    android:layout_width="80px" 
+		    android:layout_height="wrap_content" 
+		    android:text="@string/color_fondo"  />
+    	
+ 		<Spinner
+ 			android:id="@+id/spinnerColorFondo"
+ 			android:layout_width="fill_parent"
+ 			android:layout_height="wrap_content" />
+ 			
+	</LinearLayout>
+ 	
+	<LinearLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:orientation="horizontal"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+    	android:paddingBottom="10px" >
+	    
+		<TextView  
+		    android:layout_width="80px" 
+		    android:layout_height="wrap_content" 
+		    android:text="@string/color_texto"  />
+    	
+ 		<Spinner
+ 			android:id="@+id/spinnerColorTexto"
+ 			android:layout_width="fill_parent"
+ 			android:layout_height="wrap_content" />
+ 			
+	</LinearLayout>
+ 	
+    <Button
+    	android:id="@+id/botonAceptar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/boton_aceptar"  
+    	android:paddingBottom="10px" />
+
+	<TextView  
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="@string/version" />
+    	
+</LinearLayout>

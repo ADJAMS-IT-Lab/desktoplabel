@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:gravity="center_horizontal|bottom"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="15px" >
+    
+    <LinearLayout
+		android:id="@+id/layoutWidget"
+		xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:orientation="horizontal"
+	    android:gravity="center_vertical|left"
+	    android:layout_width="fill_parent"
+	    android:layout_height="60dp"
+	    android:background="#CC000000">
+	 
+		<TextView 
+			android:id="@+id/etiquetaWidget" 
+		    android:layout_width="fill_parent" 
+		    android:layout_height="60dp" 
+	    	android:gravity="center_vertical|left"
+		    android:text="DesktopLabel" 
+	    	android:textSize="30dp" 
+	    	android:textColor="#ffffff"
+	    	android:paddingLeft="15px"
+	    	android:lines="1" />
+	    
+	</LinearLayout>
+	
+</LinearLayout>

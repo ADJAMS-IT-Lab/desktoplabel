@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">DesktopLabel</string>
+    
+    <string name="app_name_4x">DesktopLabel (1x4)</string>
+    <string name="app_name_3x">DesktopLabel (1x3)</string>
+    <string name="app_name_2x">DesktopLabel (1x2)</string>
+    
+    <string name="app_nueva">New label</string>
+    <string name="etiqueta_caption">Text</string>
+    <string name="mostrar_icono">Show icon</string>
+    <string name="icono_caption">Icon</string>
+    
+    <string name="si">Yes</string>
+    <string name="no">No</string>
+    
+    <string name="color_fondo">Back. color</string>
+    <string name="color_texto">Text color</string>
+    <string name="blanco">White</string>
+    <string name="negro">Black</string>
+    <string name="transparente">Transparent</string>
+    
+    <string name="nueva_texto">
+    	Write here the text of the new desktop label:
+    </string>
+    <string name="boton_aceptar">Accept</string>
+    
+    <string name="version">Version 1.1.0</string>
+    
+</resources>

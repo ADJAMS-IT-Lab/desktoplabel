@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.serone.desktoplabel"
+      android:versionCode="4"
+      android:versionName="1.1.2">
+      
+   	<!-- DESCRIPCIÓN DE LA APLICACIÓN -->
+    	
+    <application android:icon="@drawable/icon" android:label="@string/app_name">
+    
+    	<!-- ACTIVIDADES -->
+    	
+		<activity android:name=".DesktopLabelWidgetConfigure" android:label="@string/app_name">
+		    <intent-filter>
+		        <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+		    </intent-filter>
+		</activity>
+    		
+    	<!-- RECEIVERS- -->
+    	
+		<receiver android:name=".DesktopLabelWidget4xProvider" android:label="@string/app_name_4x">
+			<intent-filter>
+				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+			</intent-filter>
+			<meta-data
+				android:name="android.appwidget.provider"
+				android:resource="@xml/desktop_label_info_4x" />
+		</receiver>
+		
+		<receiver android:name=".DesktopLabelWidget3xProvider" android:label="@string/app_name_3x">
+			<intent-filter>
+				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+			</intent-filter>
+			<meta-data
+				android:name="android.appwidget.provider"
+				android:resource="@xml/desktop_label_info_3x" />
+		</receiver>
+		
+		<receiver android:name=".DesktopLabelWidget2xProvider" android:label="@string/app_name_2x">
+			<intent-filter>
+				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+			</intent-filter>
+			<meta-data
+				android:name="android.appwidget.provider"
+				android:resource="@xml/desktop_label_info_2x" />
+		</receiver>
+		
+    </application>
+
+   	<!-- OTRAS CONFIGURACIONES -->
+    	
+    <uses-sdk android:minSdkVersion="4" />
+
+</manifest> 
