@@ -39,7 +39,7 @@ public class DesktopLabelWidgetConfigure extends Activity implements OnClickList
 	private int nImagen=1;
 	
     /**
-     * Evento de creación
+     * Evento de creaciï¿½n
      */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -47,7 +47,7 @@ public class DesktopLabelWidgetConfigure extends Activity implements OnClickList
         super.onCreate(savedInstanceState);
 
         // Especificamos el layout
-        setContentView(R.layout.layout_widget_configure);
+        setContentView(R.layout.layout_actividad_configure);
         
         // Cogemos los controles
         this.etiqueta=(EditText)findViewById(R.id.etiqueta);
@@ -64,9 +64,9 @@ public class DesktopLabelWidgetConfigure extends Activity implements OnClickList
         // Asociamos el listener de los botones
         this.botonImagenMenos.setOnClickListener(this);
         
-        // Llenamos los spinnera (básicamente es un combobox). Cada elemento es
+        // Llenamos los spinnera (bï¿½sicamente es un combobox). Cada elemento es
         // una vista en si misma. Un adapter es lo que le proporciona al
-        // spinner ésos datos, por lo que crearemos uno para cada uno.
+        // spinner ï¿½sos datos, por lo que crearemos uno para cada uno.
         String datosFondo[]=new String[3];
         String datosTexto[]=new String[2];
         String datosMostrarIcono[]=new String[2];
@@ -110,27 +110,27 @@ public class DesktopLabelWidgetConfigure extends Activity implements OnClickList
         // Si no ha ido bien...
         if(this.idWidget==AppWidgetManager.INVALID_APPWIDGET_ID)
         {
-        	Utils.logError("No se ha podido coger el ID del widget, cancelando configuración.");
+        	Utils.logError("No se ha podido coger el ID del widget, cancelando configuraciï¿½n.");
 
         	// Retornamos CANCEL
         	Intent cancelResult=new Intent();
         	cancelResult.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, this.idWidget);
             this.setResult(RESULT_CANCELED, cancelResult);
             
-        	// Salimos sin hacer nada más
+        	// Salimos sin hacer nada mï¿½s
         	this.finish();
         }
     }
 
     /**
-     * Eventos del botón
+     * Eventos del botï¿½n
      */
 	public void onClick(View v)
 	{
-		// Según el botón
+		// Segï¿½n el botï¿½n
 		if(v==(View)this.botonOK)
 		{
-			// Se ha pulsado el botón, guardamos la cadena en las SharedPreferences
+			// Se ha pulsado el botï¿½n, guardamos la cadena en las SharedPreferences
 			// y finalizamos el configurador
 			Context contexto=this.getApplicationContext();
 	
@@ -158,14 +158,14 @@ public class DesktopLabelWidgetConfigure extends Activity implements OnClickList
 	    	okResult.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, this.idWidget);
 	        this.setResult(RESULT_OK, okResult);
 	
-	        // Forzamos la primera actualización
+	        // Forzamos la primera actualizaciï¿½n
 	        AppWidgetManager appWidgetManager=AppWidgetManager.getInstance(contexto);
 	        DesktopLabelWidgetStatic.actualizar(
 	        	contexto, appWidgetManager, this.idWidget, etiquetaFinal, this.nImagen,
 	        	colorFondo, colorTexto, mostrarIcono);
 	        
 	        // Salimos
-	    	Utils.logInfo("Configuración del widget completada (etiqueta="+etiquetaFinal+", icono="+this.nImagen+")");
+	    	Utils.logInfo("Configuraciï¿½n del widget completada (etiqueta="+etiquetaFinal+", icono="+this.nImagen+")");
 	    	this.finish();
 		}
 		else if(v==(View)this.botonImagenMas)

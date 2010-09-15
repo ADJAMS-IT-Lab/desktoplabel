@@ -15,17 +15,8 @@
 	    android:gravity="center_vertical|left"
 	    android:layout_width="fill_parent"
 	    android:layout_height="60dp"
-	    android:background="#CCFFFFFF">
-	    	
-		<ImageView 
-			android:id="@+id/imagenWidget"
-			android:layout_width="60dp"
-			android:layout_height="60dp"
-	    	android:gravity="center_vertical|left"
-	    	android:padding="10px"
-	        android:scaleType="fitStart"
-	        android:src="@drawable/icono001" />
-		
+	    android:background="@drawable/fondo_negro">
+	 
 		<TextView 
 			android:id="@+id/etiquetaWidget" 
 		    android:layout_width="fill_parent" 
@@ -33,7 +24,8 @@
 	    	android:gravity="center_vertical|left"
 		    android:text="DesktopLabel" 
 	    	android:textSize="30dp" 
-	    	android:textColor="#333333"
+	    	android:textColor="#ffffff"
+	    	android:paddingLeft="15px"
 	    	android:lines="1" />
 	    
 	</LinearLayout>

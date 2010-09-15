@@ -50,7 +50,7 @@
     	android:paddingBottom="5px" >
 	    
 		<TextView  
-		    android:layout_width="80px" 
+		    android:layout_width="80dp" 
 		    android:layout_height="wrap_content" 
 		    android:text="@string/mostrar_icono"  />
     	
@@ -103,7 +103,7 @@
     	android:paddingBottom="5px" >
 	    
 		<TextView  
-		    android:layout_width="80px" 
+		    android:layout_width="80dp" 
 		    android:layout_height="wrap_content" 
 		    android:text="@string/color_fondo"  />
     	
@@ -122,7 +122,7 @@
     	android:paddingBottom="10px" >
 	    
 		<TextView  
-		    android:layout_width="80px" 
+		    android:layout_width="80dp" 
 		    android:layout_height="wrap_content" 
 		    android:text="@string/color_texto"  />
     	

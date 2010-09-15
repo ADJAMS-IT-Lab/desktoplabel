@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.widget.RemoteViews;
 
 /**
@@ -16,7 +17,7 @@ import android.widget.RemoteViews;
 public class DesktopLabelWidgetStatic
 {
 	/**
-	 * Actualización del Widget
+	 * ActualizaciÃ³n del Widget
 	 */
     public static void onUpdate(Context contexto, AppWidgetManager appWidgetManager, int[] appWidgetIds)
     {
@@ -25,7 +26,7 @@ public class DesktopLabelWidgetStatic
     	// Si no se han dado IDs...
     	if(appWidgetIds.length==0)
     	{
-    		Utils.logError("¡No se han dado IDs válidos!");
+    		Utils.logError("Â¡No se han dado IDs vÃ¡lidos!");
     		return;
     	}
     	
@@ -53,36 +54,43 @@ public class DesktopLabelWidgetStatic
     }
 
 	/**
-	 * Actualiza de forma estática
+	 * Actualiza de forma estÃ¡tica
 	 */
 	public static void actualizar(
 		Context contexto, AppWidgetManager appWidgetManager, int idWidget, String etiqueta,
 		int nImagen, int colorFondo, int colorTexto, boolean mostrarIcono)
 	{		
-		// Creamos la vista desde el layout, según el color de fondo y el modo de icono
+		// Creamos la vista desde el layout, segÃºn el color de fondo y el modo de icono
 	    RemoteViews vistaActualizada=null;
 
+		if(mostrarIcono)
+			vistaActualizada=new RemoteViews(contexto.getPackageName(), R.layout.layout_widget_con_icono);
+		else vistaActualizada=new RemoteViews(contexto.getPackageName(), R.layout.layout_widget_sin_icono);
+		
 		switch(colorFondo)
 		{
 			case 1:
 			{
-				// Blanco
-				if(mostrarIcono) vistaActualizada=new RemoteViews(contexto.getPackageName(), R.layout.layout_widget_luminoso);
-				else vistaActualizada=new RemoteViews(contexto.getPackageName(), R.layout.layout_widget_luminoso_si);
+				// Mostramos el layout con fondo blanco
+				vistaActualizada.setBitmap(
+					R.id.layoutWidget, "setBackgroundDrawable",
+					((BitmapDrawable)contexto.getResources().getDrawable(R.drawable.fondo_blanco)).getBitmap());				
 				break;
 			}
 			case 2:
 			{
-				// Transparente 
-				if(mostrarIcono) vistaActualizada=new RemoteViews(contexto.getPackageName(), R.layout.layout_widget_transparente);
-				else vistaActualizada=new RemoteViews(contexto.getPackageName(), R.layout.layout_widget_transparente_si);
+				// Mostramos el layout con fondo transparente 
+				vistaActualizada.setBitmap(
+					R.id.layoutWidget, "setBackgroundDrawable",
+					((BitmapDrawable)contexto.getResources().getDrawable(R.drawable.fondo_rojo)).getBitmap());
 				break;
 			}
 			default:
 			{
-				// Negro 
-				if(mostrarIcono) vistaActualizada=new RemoteViews(contexto.getPackageName(), R.layout.layout_widget_oscuro);
-				else vistaActualizada=new RemoteViews(contexto.getPackageName(), R.layout.layout_widget_oscuro_si);
+				// Mostramos el layout con fondo negro 
+				vistaActualizada.setBitmap(
+					R.id.layoutWidget, "setBackgroundDrawable",
+					((BitmapDrawable)contexto.getResources().getDrawable(R.drawable.fondo_negro)).getBitmap());
 				break;
 			}
 		}
