@@ -3,6 +3,6 @@
 	android:minWidth="146dp"
 	android:minHeight="72dp"
 	android:updatePeriodMillis="50"
-	android:initialLayout="@layout/layout_widget_con_icono"
+	android:initialLayout="@layout/layout_widget_con_icono_negro"
 	android:configure="com.serone.desktoplabel.DesktopLabelWidgetConfigure" >
 </appwidget-provider>

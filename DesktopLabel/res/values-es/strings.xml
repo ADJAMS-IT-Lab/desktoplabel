@@ -17,8 +17,15 @@
     
     <string name="color_fondo">Color fondo</string>
     <string name="color_texto">Color texto</string>
+    
     <string name="blanco">Blanco</string>
     <string name="negro">Negro</string>
+    <string name="amarillo">Amarillo</string>
+    <string name="azul">Azul</string>
+    <string name="morado">Morado</string>
+    <string name="naranja">Naranja</string>
+    <string name="rojo">Rojo</string>
+    <string name="verde">Verde</string>
     <string name="transparente">Transparente</string>
     
     <string name="nueva_texto">
