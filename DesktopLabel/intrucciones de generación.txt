@@ -1,0 +1,18 @@
+INSTRUCCIONES DE GENERACIÓN
+---------------------------
+
+Como todo se desarrollará en el paquete com.serone.desktoplabel, la generación
+se dividirá en dos partes
+
+  1) Generar el paquete firmado desde com.serone.desktoplabel
+  2) Copiar los archivos modificados al paquete com.serone.desktoplabeldonate
+  3) Cambiar el paquete en el manifest a com.serone.desktoplabeldonate
+  4) Corregir los errores referentes a la importación de *.R
+  5) Generar el paquete firmado desde com.serone.desktoplabeldonate
+  6) Volver a poner el paquete com.serone.desktoplabel en el manifest
+  7) Volver a corregir los errores referentes a la importación de *.R
+  
+Seguro que hay una forma mejor de hacer ésto, pero de momento a mi me vale, ya
+lo cambiaré más adelante ;)
+
+>

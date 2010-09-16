@@ -1,6 +1,8 @@
 package com.serone.desktoplabeldonate;
 
 // Imports necesarios
+import com.serone.desktoplabel.R;
+
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;

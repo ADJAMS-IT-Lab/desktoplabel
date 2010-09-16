@@ -1,13 +1,12 @@
 package com.serone.desktoplabel;
 
 // Imports necesarios
+import com.serone.desktoplabel.R;
+
 import android.appwidget.AppWidgetManager;
-import android.appwidget.AppWidgetProvider;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.widget.RemoteViews;
 
 /**
@@ -63,34 +62,157 @@ public class DesktopLabelWidgetStatic
 		// Creamos la vista desde el layout, según el color de fondo y el modo de icono
 	    RemoteViews vistaActualizada=null;
 
-		if(mostrarIcono)
-			vistaActualizada=new RemoteViews(contexto.getPackageName(), R.layout.layout_widget_con_icono);
-		else vistaActualizada=new RemoteViews(contexto.getPackageName(), R.layout.layout_widget_sin_icono);
-		
 		switch(colorFondo)
 		{
 			case 1:
-			{
-				// Mostramos el layout con fondo blanco
-				vistaActualizada.setBitmap(
-					R.id.layoutWidget, "setBackgroundDrawable",
-					((BitmapDrawable)contexto.getResources().getDrawable(R.drawable.fondo_blanco)).getBitmap());				
+			{	
+				if(mostrarIcono)
+				{
+					// Blanco con icono
+					vistaActualizada=new RemoteViews(contexto.getPackageName(),
+							R.layout.layout_widget_con_icono_blanco);
+				}
+				else
+				{
+					// Blanco sin icono
+					vistaActualizada=new RemoteViews(contexto.getPackageName(),
+							R.layout.layout_widget_sin_icono_blanco);				
+				}
 				break;
 			}
+
 			case 2:
-			{
-				// Mostramos el layout con fondo transparente 
-				vistaActualizada.setBitmap(
-					R.id.layoutWidget, "setBackgroundDrawable",
-					((BitmapDrawable)contexto.getResources().getDrawable(R.drawable.fondo_rojo)).getBitmap());
+			{	
+				if(mostrarIcono)
+				{
+					// Amarillo con icono
+					vistaActualizada=new RemoteViews(contexto.getPackageName(),
+							R.layout.layout_widget_con_icono_amarillo);
+				}
+				else
+				{
+					// Amarillo sin icono
+					vistaActualizada=new RemoteViews(contexto.getPackageName(),
+							R.layout.layout_widget_sin_icono_amarillo);				
+				}
 				break;
 			}
+
+			case 3:
+			{	
+				if(mostrarIcono)
+				{
+					// Azul con icono
+					vistaActualizada=new RemoteViews(contexto.getPackageName(),
+							R.layout.layout_widget_con_icono_azul);
+				}
+				else
+				{
+					// Azul sin icono
+					vistaActualizada=new RemoteViews(contexto.getPackageName(),
+							R.layout.layout_widget_sin_icono_azul);				
+				}
+				break;
+			}
+
+			case 4:
+			{	
+				if(mostrarIcono)
+				{
+					// Morado con icono
+					vistaActualizada=new RemoteViews(contexto.getPackageName(),
+							R.layout.layout_widget_con_icono_morado);
+				}
+				else
+				{
+					// Morado sin icono
+					vistaActualizada=new RemoteViews(contexto.getPackageName(),
+							R.layout.layout_widget_sin_icono_morado);				
+				}
+				break;
+			}
+
+			case 5:
+			{	
+				if(mostrarIcono)
+				{
+					// Naranja con icono
+					vistaActualizada=new RemoteViews(contexto.getPackageName(),
+							R.layout.layout_widget_con_icono_naranja);
+				}
+				else
+				{
+					// Naranja sin icono
+					vistaActualizada=new RemoteViews(contexto.getPackageName(),
+							R.layout.layout_widget_sin_icono_naranja);				
+				}
+				break;
+			}
+
+			case 6:
+			{	
+				if(mostrarIcono)
+				{
+					// Rojo con icono
+					vistaActualizada=new RemoteViews(contexto.getPackageName(),
+							R.layout.layout_widget_con_icono_rojo);
+				}
+				else
+				{
+					// Rojo sin icono
+					vistaActualizada=new RemoteViews(contexto.getPackageName(),
+							R.layout.layout_widget_sin_icono_rojo);				
+				}
+				break;
+			}
+
+			case 7:
+			{	
+				if(mostrarIcono)
+				{
+					// Verde con icono
+					vistaActualizada=new RemoteViews(contexto.getPackageName(),
+							R.layout.layout_widget_con_icono_verde);
+				}
+				else
+				{
+					// Verde sin icono
+					vistaActualizada=new RemoteViews(contexto.getPackageName(),
+							R.layout.layout_widget_sin_icono_verde);				
+				}
+				break;
+			}
+			
+			case 8:
+			{
+				if(mostrarIcono)
+				{
+					// Transparente con icono
+					vistaActualizada=new RemoteViews(contexto.getPackageName(),
+							R.layout.layout_widget_con_icono_transparente);
+				}
+				else
+				{
+					// Transparente sin icono
+					vistaActualizada=new RemoteViews(contexto.getPackageName(),
+							R.layout.layout_widget_sin_icono_transparente);				
+				}
+				break;
+			}			
 			default:
 			{
-				// Mostramos el layout con fondo negro 
-				vistaActualizada.setBitmap(
-					R.id.layoutWidget, "setBackgroundDrawable",
-					((BitmapDrawable)contexto.getResources().getDrawable(R.drawable.fondo_negro)).getBitmap());
+				if(mostrarIcono)
+				{
+					// Negro con icono
+					vistaActualizada=new RemoteViews(contexto.getPackageName(),
+							R.layout.layout_widget_con_icono_negro);
+				}
+				else
+				{
+					// Negro sin icono
+					vistaActualizada=new RemoteViews(contexto.getPackageName(),
+							R.layout.layout_widget_sin_icono_negro);				
+				}
 				break;
 			}
 		}
@@ -102,6 +224,42 @@ public class DesktopLabelWidgetStatic
 			{
 				// Blanco
 			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.WHITE);
+				break;
+			}
+			case 2:
+			{
+				// Amarillo
+			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.YELLOW);
+				break;
+			}
+			case 3:
+			{
+				// Azul
+			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.BLUE);
+				break;
+			}
+			case 4:
+			{
+				// Morado
+			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.MAGENTA);
+				break;
+			}
+			case 5:
+			{
+				// Naranja
+			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.argb(255, 255, 0, 255));
+				break;
+			}
+			case 6:
+			{
+				// Rojo
+			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.RED);
+				break;
+			}
+			case 7:
+			{
+				// Verde
+			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.GREEN);
 				break;
 			}
 			default:
