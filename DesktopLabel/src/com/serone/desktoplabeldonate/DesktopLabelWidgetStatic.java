@@ -1,5 +1,9 @@
 package com.serone.desktoplabeldonate;
 
+//NOTA DE LICENCIA
+//Bajo licencia GNU GPL 3 o posterior
+//Ver gpl.html
+
 // Imports necesarios
 import com.serone.desktoplabel.R;
 
