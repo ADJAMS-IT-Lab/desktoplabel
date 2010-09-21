@@ -8,6 +8,7 @@ package com.serone.desktoplabeldonate;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
 
 /**
  * Gestor de los eventos del widget
@@ -48,10 +49,21 @@ public class DesktopLabelWidget3xProvider extends AppWidgetProvider
 	 *  - ACTION_APPWIDGET_ENABLED
 	 *  - ACTION_APPWIDGET_DISABLED
 	 */
-	//public void onReceive(Context contexto, Intent intent)
-	//{
-	//	Utils.logDebug("== onReceive ==");
-	//}
+	public void onReceive(Context contexto, Intent intent)
+	{
+		Utils.logDebug("== onReceive 3x ("+intent.getAction().toString()+") ==");
+		
+		// Según la Intent...
+		if(intent.getAction().equals("..."))
+		{	
+			// Hacemos lo que toque...
+		}
+		else
+		{
+			// Actualizamos, se lo pasamos al super
+			super.onReceive(contexto, intent);
+		}		
+	}
 	
 	/**
 	 * Actualización del Widget

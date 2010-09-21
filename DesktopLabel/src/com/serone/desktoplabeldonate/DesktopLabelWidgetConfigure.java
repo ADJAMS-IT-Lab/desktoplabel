@@ -37,8 +37,7 @@ public class DesktopLabelWidgetConfigure extends Activity implements OnClickList
 	private Button botonImagenMenos;
 	private ImageView imagen;
 	private Spinner spinnerMostrarIcono;
-	private Spinner spinnerFondo;
-	private Spinner spinnerTexto;
+	private Spinner spinnerEstilo;
 	
 	// Para el ciclo de la imagen
 	private final int maxImagenes=28;
@@ -51,6 +50,7 @@ public class DesktopLabelWidgetConfigure extends Activity implements OnClickList
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        Context contexto=this.getApplicationContext();
 
         // Especificamos el layout
         setContentView(R.layout.layout_actividad_configure);
@@ -63,9 +63,9 @@ public class DesktopLabelWidgetConfigure extends Activity implements OnClickList
         this.botonImagenMas=(Button)findViewById(R.id.botonImagenMas);
         this.botonImagenMas.setOnClickListener(this);
         this.botonImagenMenos=(Button)findViewById(R.id.botonImagenMenos);
+        this.botonImagenMenos.setOnClickListener(this);
         this.spinnerMostrarIcono=(Spinner)findViewById(R.id.spinnerMostrarIcono);
-        this.spinnerFondo=(Spinner)findViewById(R.id.spinnerColorFondo);
-        this.spinnerTexto=(Spinner)findViewById(R.id.spinnerColorTexto);
+        this.spinnerEstilo=(Spinner)findViewById(R.id.spinnerEstilo);
         
         // Asociamos el listener de los botones
         this.botonImagenMenos.setOnClickListener(this);
@@ -73,48 +73,32 @@ public class DesktopLabelWidgetConfigure extends Activity implements OnClickList
         // Llenamos los spinnera (básicamente es un combobox). Cada elemento es
         // una vista en si misma. Un adapter es lo que le proporciona al
         // spinner ésos datos, por lo que crearemos uno para cada uno.
-        String datosFondo[]=new String[9];
-        String datosTexto[]=new String[8];
+        String datosEstilo[]=new String[9];
         String datosMostrarIcono[]=new String[2];
         
-        datosFondo[0]=this.getString(R.string.negro);
-        datosFondo[1]=this.getString(R.string.blanco);
-        datosFondo[2]=this.getString(R.string.amarillo);
-        datosFondo[3]=this.getString(R.string.azul);
-        datosFondo[4]=this.getString(R.string.morado);
-        datosFondo[5]=this.getString(R.string.naranja);
-        datosFondo[6]=this.getString(R.string.rojo);
-        datosFondo[7]=this.getString(R.string.verde);
-        datosFondo[8]=this.getString(R.string.transparente);
-        
-        datosTexto[0]=this.getString(R.string.negro);
-        datosTexto[1]=this.getString(R.string.blanco);
-        datosTexto[2]=this.getString(R.string.amarillo);
-        datosTexto[3]=this.getString(R.string.azul);
-        datosTexto[4]=this.getString(R.string.morado);
-        datosTexto[5]=this.getString(R.string.naranja);
-        datosTexto[6]=this.getString(R.string.rojo);
-        datosTexto[7]=this.getString(R.string.verde);
+        datosEstilo[0]=this.getString(R.string.negro);
+        datosEstilo[1]=this.getString(R.string.blanco);
+        datosEstilo[2]=this.getString(R.string.amarillo);
+        datosEstilo[3]=this.getString(R.string.azul);
+        datosEstilo[4]=this.getString(R.string.morado);
+        datosEstilo[5]=this.getString(R.string.naranja);
+        datosEstilo[6]=this.getString(R.string.rojo);
+        datosEstilo[7]=this.getString(R.string.verde);
+        datosEstilo[8]=this.getString(R.string.transparente);
         
         datosMostrarIcono[0]=this.getString(R.string.si);
         datosMostrarIcono[1]=this.getString(R.string.no);
         
-        ArrayAdapter<String> adaptadorFondo=new ArrayAdapter<String>(
+        ArrayAdapter<String> adaptadorEstilo=new ArrayAdapter<String>(
         		this.getApplicationContext(), android.R.layout.simple_spinner_item,
-        		datosFondo);
-        ArrayAdapter<String> adaptadorTexto=new ArrayAdapter<String>(
-        		this.getApplicationContext(), android.R.layout.simple_spinner_item,
-        		datosTexto);
+        		datosEstilo);
         ArrayAdapter<String> adaptadorMostrarIcono=new ArrayAdapter<String>(
         		this.getApplicationContext(), android.R.layout.simple_spinner_item,
         		datosMostrarIcono);
         
-        this.spinnerFondo.setAdapter(adaptadorFondo);
-        this.spinnerFondo.setSelection(0);
+        this.spinnerEstilo.setAdapter(adaptadorEstilo);
+        this.spinnerEstilo.setSelection(0);
         
-        this.spinnerTexto.setAdapter(adaptadorTexto);
-        this.spinnerTexto.setSelection(1);
-
         this.spinnerMostrarIcono.setAdapter(adaptadorMostrarIcono);
         this.spinnerMostrarIcono.setSelection(0);
         
@@ -131,12 +115,15 @@ public class DesktopLabelWidgetConfigure extends Activity implements OnClickList
         // Si no ha ido bien...
         if(this.idWidget==AppWidgetManager.INVALID_APPWIDGET_ID)
         {
-        	Utils.logError("No se ha podido coger el ID del widget, cancelando configuraci�n.");
+        	Utils.logError("No se ha podido coger el ID del widget, cancelando creación.");
 
         	// Retornamos CANCEL
         	Intent cancelResult=new Intent();
         	cancelResult.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, this.idWidget);
             this.setResult(RESULT_CANCELED, cancelResult);
+
+            // Mostramos al usuario
+            Utils.mostrarToast(contexto, "No se ha podido coger el ID del widget, cancelando creación.");
             
         	// Salimos sin hacer nada más
         	this.finish();
@@ -159,8 +146,7 @@ public class DesktopLabelWidgetConfigure extends Activity implements OnClickList
 			String etiquetaFinal=this.etiqueta.getText().toString();
 			
 			// Cogemos los colores
-			int colorFondo=this.spinnerFondo.getSelectedItemPosition();
-			int colorTexto=this.spinnerTexto.getSelectedItemPosition();
+			int estilo=this.spinnerEstilo.getSelectedItemPosition();
 			
 			// Cogemos el modo de icono
 			boolean mostrarIcono=(this.spinnerMostrarIcono.getSelectedItemPosition()==0?true:false);
@@ -169,8 +155,7 @@ public class DesktopLabelWidgetConfigure extends Activity implements OnClickList
 	        SharedPreferences.Editor prefs=contexto.getSharedPreferences("DesktopLabel", 0).edit();
 	        prefs.putString("Etiqueta"+this.idWidget, etiquetaFinal);
 	        prefs.putInt("Icono"+this.idWidget, this.nImagen);
-	        prefs.putInt("ColorFondo"+this.idWidget, colorFondo);
-	        prefs.putInt("ColorTexto"+this.idWidget, colorTexto);
+	        prefs.putInt("Estilo"+this.idWidget, estilo);
 	        prefs.putBoolean("MostrarIcono"+this.idWidget, mostrarIcono);
 	        prefs.commit();
 	        
@@ -183,7 +168,7 @@ public class DesktopLabelWidgetConfigure extends Activity implements OnClickList
 	        AppWidgetManager appWidgetManager=AppWidgetManager.getInstance(contexto);
 	        DesktopLabelWidgetStatic.actualizar(
 	        	contexto, appWidgetManager, this.idWidget, etiquetaFinal, this.nImagen,
-	        	colorFondo, colorTexto, mostrarIcono);
+	        	estilo, mostrarIcono);
 	        
 	        // Salimos
 	    	Utils.logInfo(

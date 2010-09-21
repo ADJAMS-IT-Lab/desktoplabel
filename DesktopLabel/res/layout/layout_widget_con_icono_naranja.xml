@@ -30,7 +30,7 @@
 		    android:text="DesktopLabel" 
 	    	android:textSize="30dp" 
 	    	android:textColor="#ffffff"
-	    	android:lines="1" />
+		    android:maxLines="2" />
 
 	</LinearLayout>
 	

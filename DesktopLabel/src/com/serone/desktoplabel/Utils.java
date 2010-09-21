@@ -15,7 +15,7 @@ import android.widget.Toast;
  */
 public class Utils
 {
-	// Configuraci�n del log
+	// Configuración del log
 	public static String logFuente="Serone";
 	public static int logNivel=4; // Desde 1 (error) hasta 4 (debug), 0=desactivado
 	
@@ -52,7 +52,7 @@ public class Utils
     }
     
     /**
-     * Muestra una notificaci�n Toast corta
+     * Muestra una notificación Toast corta
      */
     public static void mostrarToast(Context contexto, String texto)
     {
@@ -65,7 +65,7 @@ public class Utils
     }
     
     /**
-     * Muestra una notificaci�n Toast larga
+     * Muestra una notificación Toast larga
      */
     public static void mostrarToastLargo(Context contexto, String texto)
     {

@@ -22,7 +22,7 @@
 	    	android:textSize="30dp" 
 	    	android:textColor="#ffffff"
 	    	android:paddingLeft="15px"
-	    	android:lines="1" />
+		    android:maxLines="2" />
 	    
 	</LinearLayout>
 	

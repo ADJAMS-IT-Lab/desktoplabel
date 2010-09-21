@@ -8,6 +8,7 @@
     <string name="app_name_2x">DesktopLabel (1x2)</string>
     
     <string name="app_nueva">New label</string>
+    <string name="app_reconfigurar">Configure label</string>
     <string name="etiqueta_caption">Text</string>
     <string name="mostrar_icono">Show icon</string>
     <string name="icono_caption">Icon</string>
@@ -15,8 +16,7 @@
     <string name="si">Yes</string>
     <string name="no">No</string>
     
-    <string name="color_fondo">Back. color</string>
-    <string name="color_texto">Text color</string>
+    <string name="estilo">Style</string>
     
     <string name="blanco">White</string>
     <string name="negro">Black</string>
@@ -31,8 +31,11 @@
     <string name="nueva_texto">
     	Write here the text of the new desktop label:
     </string>
+    <string name="reconfigurar_texto">
+    	Reconfigure your desktop label and click Accept to commit the changes:
+    </string>
     <string name="boton_aceptar">Accept</string>
     
-    <string name="version">Version 1.2.0</string>
+    <string name="version">Version 1.3.0</string>
     
 </resources>

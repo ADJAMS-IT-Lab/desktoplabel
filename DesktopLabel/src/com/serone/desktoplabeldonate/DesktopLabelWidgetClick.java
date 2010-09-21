@@ -1,4 +1,4 @@
-package com.serone.desktoplabel;
+package com.serone.desktoplabeldonate;
 
 //NOTA DE LICENCIA
 //Bajo licencia GNU GPL 3 o posterior
@@ -25,7 +25,7 @@ import android.widget.Spinner;
  * Configurador del widget
  * @author doctor@serone.org
  */
-public class DesktopLabelWidgetConfigure extends Activity implements OnClickListener
+public class DesktopLabelWidgetClick extends Activity implements OnClickListener
 {
 	// ID del widget
 	private int idWidget=AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -51,10 +51,45 @@ public class DesktopLabelWidgetConfigure extends Activity implements OnClickList
     {
         super.onCreate(savedInstanceState);
         Context contexto=this.getApplicationContext();
-
-        // Especificamos el layout
-        setContentView(R.layout.layout_actividad_configure);
         
+        // Especificamos el layout
+        setContentView(R.layout.layout_actividad_click);
+    
+        // Cogemos el id desde el intent (lo hemos metido al asociar el evento)
+        Intent intent=this.getIntent();
+        Bundle extras=intent.getExtras();
+
+        if (extras!=null)
+        {
+            this.idWidget=extras.getInt("idWidget", AppWidgetManager.INVALID_APPWIDGET_ID);
+        }
+        
+        // Si no ha ido bien...
+        if(this.idWidget==AppWidgetManager.INVALID_APPWIDGET_ID)
+        {
+        	Utils.logError("No se ha podido coger el ID del widget, cancelando configuración.");
+
+        	// Retornamos CANCEL
+        	Intent cancelResult=new Intent();
+        	cancelResult.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, this.idWidget);
+            this.setResult(RESULT_CANCELED, cancelResult);
+            
+            // Mostramos al usuario
+            Utils.mostrarToast(contexto, "No se ha podido coger el ID del widget, cancelando configuración.");
+            
+        	// Salimos sin hacer nada más
+        	this.finish();
+        }
+        else Utils.logAviso("Reconfigurando widget #"+this.idWidget);
+
+        // Cogemos la configuración actual del widget
+        SharedPreferences prefs=contexto.getSharedPreferences("DesktopLabel", 0);
+        
+        String etiqueta=prefs.getString("Etiqueta"+this.idWidget, "DesktopLabel");
+        this.nImagen=prefs.getInt("Icono"+this.idWidget, 1);
+        int estilo=prefs.getInt("Estilo"+this.idWidget, 0);
+        boolean mostrarIcono=prefs.getBoolean("MostrarIcono"+this.idWidget, true);
+
         // Cogemos los controles
         this.etiqueta=(EditText)findViewById(R.id.etiqueta);
         this.imagen=(ImageView)findViewById(R.id.imagenWidgetConfig);
@@ -66,6 +101,9 @@ public class DesktopLabelWidgetConfigure extends Activity implements OnClickList
         this.botonImagenMenos.setOnClickListener(this);
         this.spinnerMostrarIcono=(Spinner)findViewById(R.id.spinnerMostrarIcono);
         this.spinnerEstilo=(Spinner)findViewById(R.id.spinnerEstilo);
+        
+        // Ponemos el texto actual
+        this.etiqueta.setText(etiqueta);
         
         // Asociamos el listener de los botones
         this.botonImagenMenos.setOnClickListener(this);
@@ -97,38 +135,10 @@ public class DesktopLabelWidgetConfigure extends Activity implements OnClickList
         		datosMostrarIcono);
         
         this.spinnerEstilo.setAdapter(adaptadorEstilo);
-        this.spinnerEstilo.setSelection(0);
+        this.spinnerEstilo.setSelection(estilo);
         
         this.spinnerMostrarIcono.setAdapter(adaptadorMostrarIcono);
-        this.spinnerMostrarIcono.setSelection(0);
-        
-        // Cogemos el id desde el intent
-        Intent intent=getIntent();
-        Bundle extras=intent.getExtras();
-        
-        if (extras!=null)
-        {
-            this.idWidget=extras.getInt(
-            	AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-        }
-        
-        // Si no ha ido bien...
-        if(this.idWidget==AppWidgetManager.INVALID_APPWIDGET_ID)
-        {
-        	Utils.logError("No se ha podido coger el ID del widget, cancelando creación.");
-
-        	// Retornamos CANCEL
-        	Intent cancelResult=new Intent();
-        	cancelResult.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, this.idWidget);
-            this.setResult(RESULT_CANCELED, cancelResult);
-
-            // Mostramos al usuario
-            // FIXME: Ántes de activar hacer multiidioma
-            //Utils.mostrarToast(contexto, "No se ha podido coger el ID del widget, cancelando creación.");
-            
-        	// Salimos sin hacer nada más
-        	this.finish();
-        }
+        this.spinnerMostrarIcono.setSelection((mostrarIcono?0:1));
     }
 
     /**

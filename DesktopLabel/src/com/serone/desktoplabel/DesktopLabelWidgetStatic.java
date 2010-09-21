@@ -7,8 +7,11 @@ package com.serone.desktoplabel;
 // Imports necesarios
 import com.serone.desktoplabel.R;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.widget.RemoteViews;
@@ -22,7 +25,8 @@ public class DesktopLabelWidgetStatic
 	/**
 	 * Actualización del Widget
 	 */
-    public static void onUpdate(Context contexto, AppWidgetManager appWidgetManager, int[] appWidgetIds)
+    public static void onUpdate(
+    	Context contexto, AppWidgetManager appWidgetManager, int[] appWidgetIds)
     {
 		Utils.logDebug("== onUpdate (static) ==");
 		
@@ -43,14 +47,13 @@ public class DesktopLabelWidgetStatic
             
             String etiqueta=prefs.getString("Etiqueta"+appWidgetIds[i], "DesktopLabel");
             int nImagen=prefs.getInt("Icono"+appWidgetIds[i], 1);
-            int colorFondo=prefs.getInt("ColorFondo"+appWidgetIds[i], 0);
-            int colorTexto=prefs.getInt("ColorTexto"+appWidgetIds[i], 1);
+            int estilo=prefs.getInt("Estilo"+appWidgetIds[i], 1);
             boolean mostrarIcono=prefs.getBoolean("MostrarIcono"+appWidgetIds[i], true);
 
             // Actualizamos
-    		DesktopLabelWidgetStatic.actualizar(
+			DesktopLabelWidgetStatic.actualizar(
     			contexto, appWidgetManager, appWidgetIds[i], etiqueta, nImagen,
-    			colorFondo, colorTexto, mostrarIcono);
+    			estilo, mostrarIcono);			
 		}
     	
     	Utils.logInfo("Procesados "+appWidgetIds.length+" widgets :)");
@@ -61,12 +64,12 @@ public class DesktopLabelWidgetStatic
 	 */
 	public static void actualizar(
 		Context contexto, AppWidgetManager appWidgetManager, int idWidget, String etiqueta,
-		int nImagen, int colorFondo, int colorTexto, boolean mostrarIcono)
-	{		
-		// Creamos la vista desde el layout, según el color de fondo y el modo de icono
+		int nImagen, int estilo, boolean mostrarIcono)
+	{
 	    RemoteViews vistaActualizada=null;
 
-		switch(colorFondo)
+		// Creamos la vista desde el layout, según el estilo		
+		switch(estilo)
 		{
 			case 1:
 			{	
@@ -80,8 +83,12 @@ public class DesktopLabelWidgetStatic
 				{
 					// Blanco sin icono
 					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_sin_icono_blanco);				
+							R.layout.layout_widget_sin_icono_blanco);	
 				}
+				
+				// Color de texto
+			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.BLACK);
+			    
 				break;
 			}
 
@@ -97,8 +104,12 @@ public class DesktopLabelWidgetStatic
 				{
 					// Amarillo sin icono
 					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_sin_icono_amarillo);				
+							R.layout.layout_widget_sin_icono_amarillo);			
 				}
+				
+				// Color de texto
+			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.BLACK);
+			    
 				break;
 			}
 
@@ -116,6 +127,10 @@ public class DesktopLabelWidgetStatic
 					vistaActualizada=new RemoteViews(contexto.getPackageName(),
 							R.layout.layout_widget_sin_icono_azul);				
 				}
+				
+				// Color de texto
+			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.WHITE);
+			    
 				break;
 			}
 
@@ -131,8 +146,12 @@ public class DesktopLabelWidgetStatic
 				{
 					// Morado sin icono
 					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_sin_icono_morado);				
+							R.layout.layout_widget_sin_icono_morado);			
 				}
+				
+				// Color de texto
+			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.WHITE);
+			    
 				break;
 			}
 
@@ -142,14 +161,18 @@ public class DesktopLabelWidgetStatic
 				{
 					// Naranja con icono
 					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_con_icono_naranja);
+							R.layout.layout_widget_con_icono_naranja);	
 				}
 				else
 				{
 					// Naranja sin icono
 					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_sin_icono_naranja);				
+							R.layout.layout_widget_sin_icono_naranja);			
 				}
+				
+				// Color de texto
+			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.BLACK);
+			    
 				break;
 			}
 
@@ -159,14 +182,18 @@ public class DesktopLabelWidgetStatic
 				{
 					// Rojo con icono
 					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_con_icono_rojo);
+							R.layout.layout_widget_con_icono_rojo);			
 				}
 				else
 				{
 					// Rojo sin icono
 					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_sin_icono_rojo);				
+							R.layout.layout_widget_sin_icono_rojo);					
 				}
+				
+				// Color de texto
+			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.WHITE);
+			    
 				break;
 			}
 
@@ -182,8 +209,12 @@ public class DesktopLabelWidgetStatic
 				{
 					// Verde sin icono
 					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_sin_icono_verde);				
+							R.layout.layout_widget_sin_icono_verde);			
 				}
+				
+				// Color de texto
+			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.WHITE);
+			    
 				break;
 			}
 			
@@ -199,8 +230,12 @@ public class DesktopLabelWidgetStatic
 				{
 					// Transparente sin icono
 					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_sin_icono_transparente);				
+							R.layout.layout_widget_sin_icono_transparente);		
 				}
+				
+				// Color de texto
+			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.BLACK);
+			    
 				break;
 			}			
 			default:
@@ -215,64 +250,25 @@ public class DesktopLabelWidgetStatic
 				{
 					// Negro sin icono
 					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_sin_icono_negro);				
+							R.layout.layout_widget_sin_icono_negro);
 				}
+				
+				// Color de texto
+			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.WHITE);
+			    
 				break;
 			}
 		}
 
-		// Ponemos el color del texto
-		switch(colorTexto)
-		{
-			case 1:
-			{
-				// Blanco
-			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.WHITE);
-				break;
-			}
-			case 2:
-			{
-				// Amarillo
-			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.YELLOW);
-				break;
-			}
-			case 3:
-			{
-				// Azul
-			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.BLUE);
-				break;
-			}
-			case 4:
-			{
-				// Morado
-			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.MAGENTA);
-				break;
-			}
-			case 5:
-			{
-				// Naranja
-			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.argb(255, 255, 0, 255));
-				break;
-			}
-			case 6:
-			{
-				// Rojo
-			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.RED);
-				break;
-			}
-			case 7:
-			{
-				// Verde
-			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.GREEN);
-				break;
-			}
-			default:
-			{
-				// Negro 
-			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.BLACK);
-				break;
-			}
-		}
+		// Ajustamos el tamaño de la fuente según la longitud del texto
+		     if(etiqueta.length()>34) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", 10);
+		else if(etiqueta.length()>31) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", (float) 12.5);
+		else if(etiqueta.length()>28) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", 15);
+		else if(etiqueta.length()>25) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", (float) 17.5);
+		else if(etiqueta.length()>22) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", 20);
+		else if(etiqueta.length()>19) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", (float) 22.5);
+		else if(etiqueta.length()>16) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", 25);
+		else if(etiqueta.length()>13) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", (float) 27.5);
 		
 	    // Ponemos la etiqueta
 	    vistaActualizada.setTextViewText(R.id.etiquetaWidget, etiqueta);
@@ -309,9 +305,22 @@ public class DesktopLabelWidgetStatic
 			else if(nImagen==27) vistaActualizada.setImageViewResource(R.id.imagenWidget, R.drawable.icono027);
 			else if(nImagen==28) vistaActualizada.setImageViewResource(R.id.imagenWidget, R.drawable.icono028);
 	    }
-	    
+
+	    // Creamos un intent para lanzar la actividad de reconfiguración
+	    // Le añadiremos el id del widget, para saber a quien nos referimos
+		Utils.logInfo("Asociando Widget id="+idWidget+" a eventos...");
+		
+		Intent intentClick=new Intent(contexto, DesktopLabelWidgetClick.class);
+		intentClick.putExtra("idWidget", idWidget);
+		
+		PendingIntent pendingIntent=PendingIntent.getActivity(
+			contexto, /*RequestCode*/0, intentClick, /*Flags*/0);
+
+	    // Asociamos el evento a la vista remota
+		vistaActualizada.setOnClickPendingIntent(R.id.layoutWidget, pendingIntent);
+		
 	    // Actualizamos
-		Utils.logInfo("Actualizando Widget id="+idWidget+" ("+etiqueta+")");
+		Utils.logInfo("Actualizando Widget id="+idWidget+" ("+etiqueta+")...");
 		appWidgetManager.updateAppWidget(idWidget, vistaActualizada);
 	}
 }
