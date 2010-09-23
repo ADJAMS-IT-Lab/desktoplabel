@@ -75,25 +75,6 @@
 			<TextView  
 			    android:layout_width="80dp" 
 			    android:layout_height="wrap_content" 
-			    android:text="@string/mostrar_icono"  />
-	    	
-	 		<Spinner
-	 			android:id="@+id/spinnerMostrarIcono"
-	 			android:layout_width="fill_parent"
-	 			android:layout_height="wrap_content" />
-	 			
-		</LinearLayout>
-	 	
-		<LinearLayout
-			xmlns:android="http://schemas.android.com/apk/res/android"
-		    android:orientation="horizontal"
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-	    	android:paddingBottom="5px" >
-		    
-			<TextView  
-			    android:layout_width="80dp" 
-			    android:layout_height="wrap_content" 
 			    android:text="@string/icono_caption" />
 	    	
 		    <Button
@@ -118,6 +99,25 @@
 		    	
 	 	</LinearLayout>
 	 	
+		<LinearLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:orientation="horizontal"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+	    	android:paddingBottom="5px" >
+		    
+			<TextView  
+			    android:layout_width="80dp" 
+			    android:layout_height="wrap_content" 
+			    android:text="@string/mostrar_icono"  />
+	    	
+	 		<Spinner
+	 			android:id="@+id/spinnerMostrarIcono"
+	 			android:layout_width="fill_parent"
+	 			android:layout_height="wrap_content" />
+	 			
+		</LinearLayout>
+	 	
 	    <Button
 	    	android:id="@+id/botonAceptar"
 	        android:layout_width="wrap_content"
@@ -125,11 +125,6 @@
 	        android:text="@string/boton_aceptar"  
 	    	android:paddingBottom="10px" />
 	
-		<TextView  
-		    android:layout_width="fill_parent" 
-		    android:layout_height="wrap_content" 
-		    android:text="@string/version" />
-	    
 	</LinearLayout>
 	
 </ScrollView>

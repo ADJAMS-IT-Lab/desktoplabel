@@ -56,8 +56,12 @@ public class DesktopLabelWidgetClick extends Activity implements OnClickListener
         setContentView(R.layout.layout_actividad_click);
     
         // Cogemos el id desde el intent (lo hemos metido al asociar el evento)
-        Intent intent=this.getIntent();
-        this.idWidget=intent.getIntExtra("idWidget", AppWidgetManager.INVALID_APPWIDGET_ID);
+        // NOTA: Como los extras daban problemas, hemos metido el id como una
+        // uri de datos Android. Ver la documentación para más detalles.
+        Intent intent=this.getIntent(); 
+        String uri=intent.getData().toString();
+        
+        this.idWidget=new Integer(uri.split("//")[1]);
 
         // Si no ha ido bien...
         if(this.idWidget==AppWidgetManager.INVALID_APPWIDGET_ID)

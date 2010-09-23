@@ -14,6 +14,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Bundle;
 import android.widget.RemoteViews;
 
 /**
@@ -310,14 +312,24 @@ public class DesktopLabelWidgetStatic
 	    // Le añadiremos el id del widget, para saber a quien nos referimos
 		Utils.logInfo("Asociando Widget id="+idWidget+" a eventos...");
 		
-		Intent intentClick=new Intent(contexto, DesktopLabelWidgetClick.class);
-		intentClick.putExtra("idWidget", idWidget);
-		
-		PendingIntent pendingIntent=PendingIntent.getActivity(
-			contexto, /*RequestCode*/0, intentClick, /*Flags*/0);
-
-	    // Asociamos el evento a la vista remota
-		vistaActualizada.setOnClickPendingIntent(R.id.layoutWidget, pendingIntent);
+		try
+		{
+	        // NOTA: Como los extras daban problemas, hemos metido el id como una
+	        // uri de datos Android. Ver la documentación para más detalles.
+			Intent intentClick=new Intent(contexto, DesktopLabelWidgetClick.class);
+			intentClick.setAction("com.serone.desktoplabel.click");
+			intentClick.setData(Uri.parse("id://"+idWidget));
+			
+			PendingIntent pendingIntent=PendingIntent.getActivity(
+				contexto, /*RequestCode*/0, intentClick, 0);
+	
+		    // Asociamos el evento a la vista remota
+			vistaActualizada.setOnClickPendingIntent(R.id.layoutWidget, pendingIntent);
+		}
+		catch(Exception e)
+		{
+			Utils.logError(e.getMessage());
+		}
 		
 	    // Actualizamos
 		Utils.logInfo("Actualizando Widget id="+idWidget+" ("+etiqueta+")...");

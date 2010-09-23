@@ -35,7 +35,5 @@
     	Reconfigura tu etiqueta de escritorio y pulsa Aceptar para ver los cambios.
     </string>
     <string name="boton_aceptar">Aceptar</string>
-    
-    <string name="version">Versión 1.3.0</string>
-    
+   
 </resources>
