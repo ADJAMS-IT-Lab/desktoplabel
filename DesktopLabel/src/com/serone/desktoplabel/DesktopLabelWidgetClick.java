@@ -12,36 +12,57 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 /**
- * Configurador del widget
+ * Configurador del widget en tiempo de ejecución
  * @author doctor@serone.org
  */
-public class DesktopLabelWidgetClick extends Activity implements OnClickListener
+public class DesktopLabelWidgetClick extends Activity
+	implements OnClickListener, ColorPickerDialog.OnColorChangedListener, OnCheckedChangeListener
 {
 	// ID del widget
 	private int idWidget=AppWidgetManager.INVALID_APPWIDGET_ID;
 	
 	// Controles
 	private EditText etiqueta;
-	private Button botonOK;
-	private Button botonImagenMas;
-	private Button botonImagenMenos;
-	private ImageView imagen;
-	private Spinner spinnerMostrarIcono;
-	private Spinner spinnerEstilo;
 	
-	// Para el ciclo de la imagen
-	private final int maxImagenes=28;
-	private int nImagen=1;
+	private Button botonOK;
+	private Button botonColorFondo;
+	private Button botonColorTexto;
+	private Button botonIcono;
+	
+	private CheckBox checkboxColorFondo;
+	private CheckBox checkboxColorTexto;
+	private CheckBox checkboxIcono;
+
+	private ImageView imagenWidget;
+	private TextView etiquetaWidget;
+
+	// Configuración final
+	private int colorFondo=Color.BLACK;
+	private boolean colorFondoActivo=true;
+	private int colorTexto=Color.WHITE;
+	private boolean colorTextoActivo=true;
+	private int icono=1;
+	private boolean iconoActivo=true;
+	
+	// Diálogos
+	
+	// Coloreando ahora (0=nada, 1=fondo, 2=texto)
+	int coloreandoAhora=0;
 	
     /**
      * Evento de creación
@@ -85,63 +106,40 @@ public class DesktopLabelWidgetClick extends Activity implements OnClickListener
         // Cogemos la configuración actual del widget
         SharedPreferences prefs=contexto.getSharedPreferences("DesktopLabel", 0);
         
+        /*
         String etiqueta=prefs.getString("Etiqueta"+this.idWidget, "DesktopLabel");
         this.nImagen=prefs.getInt("Icono"+this.idWidget, 1);
         int estilo=prefs.getInt("Estilo"+this.idWidget, 0);
         boolean mostrarIcono=prefs.getBoolean("MostrarIcono"+this.idWidget, true);
-
+		*/
+        
         // Cogemos los controles
         this.etiqueta=(EditText)findViewById(R.id.etiqueta);
-        this.imagen=(ImageView)findViewById(R.id.imagenWidgetConfig);
+        
         this.botonOK=(Button)findViewById(R.id.botonAceptar);
         this.botonOK.setOnClickListener(this);
-        this.botonImagenMas=(Button)findViewById(R.id.botonImagenMas);
-        this.botonImagenMas.setOnClickListener(this);
-        this.botonImagenMenos=(Button)findViewById(R.id.botonImagenMenos);
-        this.botonImagenMenos.setOnClickListener(this);
-        this.spinnerMostrarIcono=(Spinner)findViewById(R.id.spinnerMostrarIcono);
-        this.spinnerEstilo=(Spinner)findViewById(R.id.spinnerEstilo);
-        
-        // Ponemos el texto actual
-        this.etiqueta.setText(etiqueta);
+        this.botonColorFondo=(Button)findViewById(R.id.botonColorFondo);
+        this.botonColorFondo.setOnClickListener(this);
+        this.botonColorTexto=(Button)findViewById(R.id.botonColorTexto);
+        this.botonColorTexto.setOnClickListener(this);
+        this.botonIcono=(Button)findViewById(R.id.botonIcono);
+        this.botonIcono.setOnClickListener(this);
 
-        // Ponemos la imagen aconfigurada
-        this.actualizarImagen();
-        
-        // Asociamos el listener de los botones
-        this.botonImagenMenos.setOnClickListener(this);
-        
-        // Llenamos los spinnera (básicamente es un combobox). Cada elemento es
-        // una vista en si misma. Un adapter es lo que le proporciona al
-        // spinner ésos datos, por lo que crearemos uno para cada uno.
-        String datosEstilo[]=new String[9];
-        String datosMostrarIcono[]=new String[2];
-        
-        datosEstilo[0]=this.getString(R.string.negro);
-        datosEstilo[1]=this.getString(R.string.blanco);
-        datosEstilo[2]=this.getString(R.string.amarillo);
-        datosEstilo[3]=this.getString(R.string.azul);
-        datosEstilo[4]=this.getString(R.string.morado);
-        datosEstilo[5]=this.getString(R.string.naranja);
-        datosEstilo[6]=this.getString(R.string.rojo);
-        datosEstilo[7]=this.getString(R.string.verde);
-        datosEstilo[8]=this.getString(R.string.transparente);
-        
-        datosMostrarIcono[0]=this.getString(R.string.si);
-        datosMostrarIcono[1]=this.getString(R.string.no);
-        
-        ArrayAdapter<String> adaptadorEstilo=new ArrayAdapter<String>(
-        		this.getApplicationContext(), android.R.layout.simple_spinner_item,
-        		datosEstilo);
-        ArrayAdapter<String> adaptadorMostrarIcono=new ArrayAdapter<String>(
-        		this.getApplicationContext(), android.R.layout.simple_spinner_item,
-        		datosMostrarIcono);
-        
-        this.spinnerEstilo.setAdapter(adaptadorEstilo);
-        this.spinnerEstilo.setSelection(estilo);
-        
-        this.spinnerMostrarIcono.setAdapter(adaptadorMostrarIcono);
-        this.spinnerMostrarIcono.setSelection((mostrarIcono?0:1));
+        this.checkboxColorFondo=(CheckBox)findViewById(R.id.checkboxColorFondoTransparente);
+        this.checkboxColorFondo.setOnCheckedChangeListener(this);
+        this.checkboxColorTexto=(CheckBox)findViewById(R.id.checkboxColorTextoTransparente);
+        this.checkboxColorTexto.setOnCheckedChangeListener(this);
+        this.checkboxIcono=(CheckBox)findViewById(R.id.checkboxSinIcono);
+        this.checkboxIcono.setOnCheckedChangeListener(this);
+
+        this.imagenWidget=(ImageView)findViewById(R.id.imagenWidget);
+        this.etiquetaWidget=(TextView)findViewById(R.id.etiquetaWidget);
+
+        // Configuramos la imagen
+		this.imagenWidget.setMaxHeight(60);
+		this.imagenWidget.setMaxWidth(60);
+		
+        // Reconfiguramos la vista con la configuración actual
     }
 
     /**
@@ -159,20 +157,22 @@ public class DesktopLabelWidgetClick extends Activity implements OnClickListener
 			// Cogemos la etiqueta
 			String etiquetaFinal=this.etiqueta.getText().toString();
 			
-			// Cogemos los colores
-			int estilo=this.spinnerEstilo.getSelectedItemPosition();
-			
-			// Cogemos el modo de icono
-			boolean mostrarIcono=(this.spinnerMostrarIcono.getSelectedItemPosition()==0?true:false);
-			
 			// Guardamos
 	        SharedPreferences.Editor prefs=contexto.getSharedPreferences("DesktopLabel", 0).edit();
-	        prefs.putString("Etiqueta"+this.idWidget, etiquetaFinal);
-	        prefs.putInt("Icono"+this.idWidget, this.nImagen);
-	        prefs.putInt("Estilo"+this.idWidget, estilo);
-	        prefs.putBoolean("MostrarIcono"+this.idWidget, mostrarIcono);
-	        prefs.commit();
 	        
+	        prefs.putString( "Widget="+this.idWidget+" (Etiqueta)", 		 etiquetaFinal);
+
+	        prefs.putInt(	 "Widget="+this.idWidget+" (ColorFondo)", 		 this.colorFondo);
+	        prefs.putBoolean("Widget="+this.idWidget+" (MostrarColorFondo)", this.colorFondoActivo);
+
+	        prefs.putInt(	 "Widget="+this.idWidget+" (ColorTexto)", 		 this.colorTexto);
+	        prefs.putBoolean("Widget="+this.idWidget+" (MostrarColorTexto)", this.colorTextoActivo);
+	        
+	        prefs.putInt(	 "Widget="+this.idWidget+" (Icono)", 			 this.icono);
+	        prefs.putBoolean("Widget="+this.idWidget+" (MostrarIcono)", 	 this.iconoActivo);
+	        
+	        prefs.commit();
+			
 	        // Ponemos el result a OK y retornamos el ID
 	    	Intent okResult=new Intent();
 	    	okResult.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, this.idWidget);
@@ -180,68 +180,174 @@ public class DesktopLabelWidgetClick extends Activity implements OnClickListener
 	
 	        // Forzamos la primera actualización
 	        AppWidgetManager appWidgetManager=AppWidgetManager.getInstance(contexto);
+	        
+	        /*
 	        DesktopLabelWidgetStatic.actualizar(
 	        	contexto, appWidgetManager, this.idWidget, etiquetaFinal, this.nImagen,
 	        	estilo, mostrarIcono);
-
+			*/
+			
             // Mostramos al usuario
 	        // FIXME: Ántes de activar hacer multiidioma
             //Utils.mostrarToast(contexto, "Se ha actualizado la configuración del ID del widget.");
             
 	        // Salimos
-	    	Utils.logInfo(
-	    		"Configuración del widget completada (etiqueta="+etiquetaFinal+
-	    		", icono="+this.nImagen+", mostrar="+mostrarIcono+")");
+	    	Utils.logInfo("Configuración del widget completada (etiqueta="+etiquetaFinal+")");
 	    	this.finish();
 		}
-		else if(v==(View)this.botonImagenMas)
+		else if(v==(View)this.botonColorFondo)
 		{
-			// Cambiamos el puntero y actualizamos
-			if(this.nImagen==this.maxImagenes) this.nImagen=1;
-			else this.nImagen++;
-			this.actualizarImagen();
+			this.coloreandoAhora=1;
+			new ColorPickerDialog(this, this, Color.BLACK).show();
 		}
-		else if(v==(View)this.botonImagenMenos)
+		else if(v==(View)this.botonColorTexto)
 		{
-			// Cambiamos el puntero y actualizamos
-			if(this.nImagen==1) this.nImagen=this.maxImagenes;
-			else this.nImagen--;
-			this.actualizarImagen();
+			this.coloreandoAhora=2;
+			new ColorPickerDialog(this, this, Color.WHITE).show();
+		}
+		else if(v==(View)this.botonIcono)
+		{
 		}
 	}
 
 	/**
-	 * Muestra una u otra imagen, según el puntero
+	 * Atiende a los cambios de icono 
 	 */
-	private void actualizarImagen()
+	public void cambiarIcono(int numIcono)
+	{	
+		this.icono=numIcono;
+		this.iconoActivo=this.checkboxColorTexto.isChecked();
+
+		// Cambiamos la visibilidad del icono
+		if(this.checkboxIcono.isChecked())
+		{
+			// Cambiamos el margen
+			this.imagenWidget.setPadding(5, 5, 5, 5);
+
+	        // Configuramos la imagen
+			this.imagenWidget.setMaxHeight(60);
+			this.imagenWidget.setMaxWidth(0);
+			
+		    // Quitamos el icono
+			this.imagenWidget.setImageResource(R.drawable.vacio);
+		}
+		else
+		{
+			// Cambiamos el margen
+			this.imagenWidget.setPadding(10, 10, 10, 10);
+
+	        // Configuramos la imagen
+			this.imagenWidget.setMaxHeight(60);
+			this.imagenWidget.setMaxWidth(60);
+			
+		    // Cambiamos el icono
+			     if(numIcono==1)  this.imagenWidget.setImageResource(R.drawable.icono001);
+			else if(numIcono==2)  this.imagenWidget.setImageResource(R.drawable.icono002);
+			else if(numIcono==3)  this.imagenWidget.setImageResource(R.drawable.icono003);
+			else if(numIcono==4)  this.imagenWidget.setImageResource(R.drawable.icono004);
+			else if(numIcono==5)  this.imagenWidget.setImageResource(R.drawable.icono005);
+			else if(numIcono==6)  this.imagenWidget.setImageResource(R.drawable.icono006);
+			else if(numIcono==7)  this.imagenWidget.setImageResource(R.drawable.icono007);
+			else if(numIcono==8)  this.imagenWidget.setImageResource(R.drawable.icono008);
+			else if(numIcono==9)  this.imagenWidget.setImageResource(R.drawable.icono009);
+			else if(numIcono==10) this.imagenWidget.setImageResource(R.drawable.icono010);
+			else if(numIcono==11) this.imagenWidget.setImageResource(R.drawable.icono011);
+			else if(numIcono==12) this.imagenWidget.setImageResource(R.drawable.icono012);
+			else if(numIcono==13) this.imagenWidget.setImageResource(R.drawable.icono013);
+			else if(numIcono==14) this.imagenWidget.setImageResource(R.drawable.icono014);
+			else if(numIcono==15) this.imagenWidget.setImageResource(R.drawable.icono015);
+			else if(numIcono==16) this.imagenWidget.setImageResource(R.drawable.icono016);
+			else if(numIcono==17) this.imagenWidget.setImageResource(R.drawable.icono017);
+			else if(numIcono==18) this.imagenWidget.setImageResource(R.drawable.icono018);
+			else if(numIcono==19) this.imagenWidget.setImageResource(R.drawable.icono019);
+			else if(numIcono==20) this.imagenWidget.setImageResource(R.drawable.icono020);
+			else if(numIcono==21) this.imagenWidget.setImageResource(R.drawable.icono021);
+			else if(numIcono==22) this.imagenWidget.setImageResource(R.drawable.icono022);
+			else if(numIcono==23) this.imagenWidget.setImageResource(R.drawable.icono023);
+			else if(numIcono==24) this.imagenWidget.setImageResource(R.drawable.icono024);
+			else if(numIcono==25) this.imagenWidget.setImageResource(R.drawable.icono025);
+			else if(numIcono==26) this.imagenWidget.setImageResource(R.drawable.icono026);
+			else if(numIcono==27) this.imagenWidget.setImageResource(R.drawable.icono027);
+			else if(numIcono==28) this.imagenWidget.setImageResource(R.drawable.icono028);
+		}
+	}
+	
+	/**
+	 * Atiende a los cambios de color 
+	 */
+	public void colorChanged(int color)
 	{
-		     if(this.nImagen==1)  this.imagen.setImageResource(R.drawable.icono001);
-		else if(this.nImagen==2)  this.imagen.setImageResource(R.drawable.icono002);
-		else if(this.nImagen==3)  this.imagen.setImageResource(R.drawable.icono003);
-		else if(this.nImagen==4)  this.imagen.setImageResource(R.drawable.icono004);
-		else if(this.nImagen==5)  this.imagen.setImageResource(R.drawable.icono005);
-		else if(this.nImagen==6)  this.imagen.setImageResource(R.drawable.icono006);
-		else if(this.nImagen==7)  this.imagen.setImageResource(R.drawable.icono007);
-		else if(this.nImagen==8)  this.imagen.setImageResource(R.drawable.icono008);
-		else if(this.nImagen==9)  this.imagen.setImageResource(R.drawable.icono009);
-		else if(this.nImagen==10) this.imagen.setImageResource(R.drawable.icono010);
-		else if(this.nImagen==11) this.imagen.setImageResource(R.drawable.icono011);
-		else if(this.nImagen==12) this.imagen.setImageResource(R.drawable.icono012);
-		else if(this.nImagen==13) this.imagen.setImageResource(R.drawable.icono013);
-		else if(this.nImagen==14) this.imagen.setImageResource(R.drawable.icono014);
-		else if(this.nImagen==15) this.imagen.setImageResource(R.drawable.icono015);
-		else if(this.nImagen==16) this.imagen.setImageResource(R.drawable.icono016);
-		else if(this.nImagen==17) this.imagen.setImageResource(R.drawable.icono017);
-		else if(this.nImagen==18) this.imagen.setImageResource(R.drawable.icono018);
-		else if(this.nImagen==19) this.imagen.setImageResource(R.drawable.icono019);
-		else if(this.nImagen==20) this.imagen.setImageResource(R.drawable.icono020);
-		else if(this.nImagen==21) this.imagen.setImageResource(R.drawable.icono021);
-		else if(this.nImagen==22) this.imagen.setImageResource(R.drawable.icono022);
-		else if(this.nImagen==23) this.imagen.setImageResource(R.drawable.icono023);
-		else if(this.nImagen==24) this.imagen.setImageResource(R.drawable.icono024);
-		else if(this.nImagen==25) this.imagen.setImageResource(R.drawable.icono025);
-		else if(this.nImagen==26) this.imagen.setImageResource(R.drawable.icono026);
-		else if(this.nImagen==27) this.imagen.setImageResource(R.drawable.icono027);
-		else if(this.nImagen==28) this.imagen.setImageResource(R.drawable.icono028);
+		switch(this.coloreandoAhora)
+		{
+			case 1:
+			{
+				this.colorFondo=color;
+				this.colorFondoActivo=this.checkboxColorFondo.isChecked();
+				
+				// Coloreamos
+				if(this.checkboxColorFondo.isChecked())
+				{
+					this.imagenWidget.setBackgroundColor(Color.TRANSPARENT);
+			        this.etiquetaWidget.setBackgroundColor(Color.TRANSPARENT);
+				}
+				else
+				{
+					this.imagenWidget.setBackgroundColor(color);
+			        this.etiquetaWidget.setBackgroundColor(color);
+				}
+				
+		        // Reseteamos
+		        this.coloreandoAhora=0;
+		        
+				break;
+			}
+			
+			case 2:
+			{
+				this.colorTexto=color;
+				this.colorTextoActivo=this.checkboxColorTexto.isChecked();
+				
+				// Coloreamos
+				if(this.checkboxColorTexto.isChecked())
+				{
+					this.etiquetaWidget.setTextColor(Color.TRANSPARENT);
+				}
+				else
+				{
+					this.etiquetaWidget.setTextColor(color);
+				}
+				
+		        // Reseteamos
+		        this.coloreandoAhora=0;
+		        
+				break;
+			}
+			
+			default:
+			{
+				break;
+			}
+		}
+	}
+	
+	/**
+	 * Listener de los checkboxes
+	 */
+	public void onCheckedChanged(CompoundButton v, boolean isChecked)
+	{
+		if(v==(View)this.checkboxColorFondo)
+		{
+	        this.coloreandoAhora=1;
+			this.colorChanged(this.colorFondo);
+		}
+		else if(v==(View)this.checkboxColorTexto)
+		{
+	        this.coloreandoAhora=2;
+			this.colorChanged(this.colorTexto);
+		}
+		else if(v==(View)this.checkboxIcono)
+		{
+			this.cambiarIcono(this.icono);
+		}
 	}
 }

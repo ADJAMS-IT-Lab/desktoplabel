@@ -70,214 +70,13 @@ public class DesktopLabelWidgetStatic
 	{
 	    RemoteViews vistaActualizada=null;
 
-		// Creamos la vista desde el layout, según el estilo		
-		switch(estilo)
+		// Creamos la vista desde el layout, según los parámetros dados
+		if(mostrarIcono)
 		{
-			case 1:
-			{	
-				if(mostrarIcono)
-				{
-					// Blanco con icono
-					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_con_icono_blanco);
-				}
-				else
-				{
-					// Blanco sin icono
-					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_sin_icono_blanco);	
-				}
-				
-				// Color de texto
-			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.BLACK);
-			    
-				break;
-			}
+			// Con icono
+			vistaActualizada=new RemoteViews(contexto.getPackageName(),R.layout.layout_widget_con_icono);			
 
-			case 2:
-			{	
-				if(mostrarIcono)
-				{
-					// Amarillo con icono
-					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_con_icono_amarillo);
-				}
-				else
-				{
-					// Amarillo sin icono
-					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_sin_icono_amarillo);			
-				}
-				
-				// Color de texto
-			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.BLACK);
-			    
-				break;
-			}
-
-			case 3:
-			{	
-				if(mostrarIcono)
-				{
-					// Azul con icono
-					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_con_icono_azul);
-				}
-				else
-				{
-					// Azul sin icono
-					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_sin_icono_azul);				
-				}
-				
-				// Color de texto
-			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.WHITE);
-			    
-				break;
-			}
-
-			case 4:
-			{	
-				if(mostrarIcono)
-				{
-					// Morado con icono
-					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_con_icono_morado);
-				}
-				else
-				{
-					// Morado sin icono
-					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_sin_icono_morado);			
-				}
-				
-				// Color de texto
-			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.WHITE);
-			    
-				break;
-			}
-
-			case 5:
-			{	
-				if(mostrarIcono)
-				{
-					// Naranja con icono
-					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_con_icono_naranja);	
-				}
-				else
-				{
-					// Naranja sin icono
-					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_sin_icono_naranja);			
-				}
-				
-				// Color de texto
-			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.BLACK);
-			    
-				break;
-			}
-
-			case 6:
-			{	
-				if(mostrarIcono)
-				{
-					// Rojo con icono
-					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_con_icono_rojo);			
-				}
-				else
-				{
-					// Rojo sin icono
-					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_sin_icono_rojo);					
-				}
-				
-				// Color de texto
-			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.WHITE);
-			    
-				break;
-			}
-
-			case 7:
-			{	
-				if(mostrarIcono)
-				{
-					// Verde con icono
-					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_con_icono_verde);
-				}
-				else
-				{
-					// Verde sin icono
-					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_sin_icono_verde);			
-				}
-				
-				// Color de texto
-			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.WHITE);
-			    
-				break;
-			}
-			
-			case 8:
-			{
-				if(mostrarIcono)
-				{
-					// Transparente con icono
-					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_con_icono_transparente);
-				}
-				else
-				{
-					// Transparente sin icono
-					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_sin_icono_transparente);		
-				}
-				
-				// Color de texto
-			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.BLACK);
-			    
-				break;
-			}			
-			default:
-			{
-				if(mostrarIcono)
-				{
-					// Negro con icono
-					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_con_icono_negro);
-				}
-				else
-				{
-					// Negro sin icono
-					vistaActualizada=new RemoteViews(contexto.getPackageName(),
-							R.layout.layout_widget_sin_icono_negro);
-				}
-				
-				// Color de texto
-			    vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.WHITE);
-			    
-				break;
-			}
-		}
-
-		// Ajustamos el tamaño de la fuente según la longitud del texto
-		     if(etiqueta.length()>34) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", 10);
-		else if(etiqueta.length()>31) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", (float) 12.5);
-		else if(etiqueta.length()>28) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", 15);
-		else if(etiqueta.length()>25) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", (float) 17.5);
-		else if(etiqueta.length()>22) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", 20);
-		else if(etiqueta.length()>19) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", (float) 22.5);
-		else if(etiqueta.length()>16) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", 25);
-		else if(etiqueta.length()>13) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", (float) 27.5);
-		
-	    // Ponemos la etiqueta
-	    vistaActualizada.setTextViewText(R.id.etiquetaWidget, etiqueta);
-
-	    // Cambiamos la imagen
-	    if(mostrarIcono)
-	    {
+		    // Cambiamos la imagen
 			     if(nImagen==1)  vistaActualizada.setImageViewResource(R.id.imagenWidget, R.drawable.icono001);
 			else if(nImagen==2)  vistaActualizada.setImageViewResource(R.id.imagenWidget, R.drawable.icono002);
 			else if(nImagen==3)  vistaActualizada.setImageViewResource(R.id.imagenWidget, R.drawable.icono003);
@@ -306,7 +105,25 @@ public class DesktopLabelWidgetStatic
 			else if(nImagen==26) vistaActualizada.setImageViewResource(R.id.imagenWidget, R.drawable.icono026);
 			else if(nImagen==27) vistaActualizada.setImageViewResource(R.id.imagenWidget, R.drawable.icono027);
 			else if(nImagen==28) vistaActualizada.setImageViewResource(R.id.imagenWidget, R.drawable.icono028);
-	    }
+		}
+		else
+		{
+			// Sin icono
+			vistaActualizada=new RemoteViews(contexto.getPackageName(),	R.layout.layout_widget_sin_icono);	
+		}
+
+		// Ajustamos el tamaño de la fuente según la longitud del texto
+		     if(etiqueta.length()>34) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", 10);
+		else if(etiqueta.length()>31) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", (float) 12.5);
+		else if(etiqueta.length()>28) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", 15);
+		else if(etiqueta.length()>25) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", (float) 17.5);
+		else if(etiqueta.length()>22) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", 20);
+		else if(etiqueta.length()>19) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", (float) 22.5);
+		else if(etiqueta.length()>16) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", 25);
+		else if(etiqueta.length()>13) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", (float) 27.5);
+		
+	    // Ponemos la etiqueta
+	    vistaActualizada.setTextViewText(R.id.etiquetaWidget, etiqueta);
 
 	    // Creamos un intent para lanzar la actividad de reconfiguración
 	    // Le añadiremos el id del widget, para saber a quien nos referimos

@@ -9,19 +9,9 @@
     android:padding="15px" >
     
     <LinearLayout
-		android:id="@+id/layoutWidget" 
-		xmlns:android="http://schemas.android.com/apk/res/android"
-    	style="@style/FondoAzul">
-
-		<ImageView 
-			android:id="@+id/imagenWidget"
-			android:layout_width="60dp"
-			android:layout_height="60dp"
-	    	android:gravity="center_vertical|left"
-	    	android:padding="10px"
-	        android:scaleType="fitStart"
-	        android:src="@drawable/icono001" />
-
+		android:id="@+id/layoutWidget"
+		xmlns:android="http://schemas.android.com/apk/res/android">
+	 
 		<TextView 
 			android:id="@+id/etiquetaWidget" 
 		    android:layout_width="fill_parent" 
@@ -30,8 +20,9 @@
 		    android:text="DesktopLabel" 
 	    	android:textSize="30dp" 
 	    	android:textColor="#ffffff"
+	    	android:paddingLeft="15px"
 		    android:maxLines="2" />
-
+	    
 	</LinearLayout>
 	
 </LinearLayout>

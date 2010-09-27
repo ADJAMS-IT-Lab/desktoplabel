@@ -56,13 +56,20 @@
 			<TextView  
 			    android:layout_width="80dp" 
 			    android:layout_height="wrap_content" 
-			    android:text="@string/estilo"  />
+			    android:text="@string/color_fondo"  />
 	    	
-	 		<Spinner
-	 			android:id="@+id/spinnerEstilo"
-	 			android:layout_width="fill_parent"
-	 			android:layout_height="wrap_content" />
-	 			
+		    <Button
+		    	android:id="@+id/botonColorFondo"
+		        android:layout_width="75dp"
+		        android:layout_height="wrap_content"
+		        android:text="@string/escoger" /> 
+		    	
+		    <CheckBox
+		    	android:id="@+id/checkboxColorFondoTransparente"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/transparente" /> 
+
 		</LinearLayout>
 	 	
 		<LinearLayout
@@ -75,29 +82,21 @@
 			<TextView  
 			    android:layout_width="80dp" 
 			    android:layout_height="wrap_content" 
-			    android:text="@string/icono_caption" />
+			    android:text="@string/color_texto"  />
 	    	
 		    <Button
-		    	android:id="@+id/botonImagenMenos"
-		        android:layout_width="50dp"
+		    	android:id="@+id/botonColorTexto"
+		        android:layout_width="75dp"
 		        android:layout_height="wrap_content"
-		        android:text=" &lt; " /> 
+		        android:text="@string/escoger" /> 
 		    	
-			<ImageView 
-				android:id="@+id/imagenWidgetConfig"
-				android:layout_width="62dp"
-				android:layout_height="42dp"
-		    	android:gravity="center_vertical|center_horizontal"
-		        android:scaleType="fitCenter"
-		        android:src="@drawable/icono001" />
-	 
-		    <Button
-		    	android:id="@+id/botonImagenMas"
-		        android:layout_width="50dp"
+		    <CheckBox
+		    	android:id="@+id/checkboxColorTextoTransparente"
+		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:text=" &gt; " />
-		    	
-	 	</LinearLayout>
+		        android:text="@string/transparente" /> 
+
+		</LinearLayout>
 	 	
 		<LinearLayout
 			xmlns:android="http://schemas.android.com/apk/res/android"
@@ -109,15 +108,62 @@
 			<TextView  
 			    android:layout_width="80dp" 
 			    android:layout_height="wrap_content" 
-			    android:text="@string/mostrar_icono"  />
+			    android:text="@string/icono"  />
 	    	
-	 		<Spinner
-	 			android:id="@+id/spinnerMostrarIcono"
-	 			android:layout_width="fill_parent"
-	 			android:layout_height="wrap_content" />
-	 			
+		    <Button
+		    	android:id="@+id/botonIcono"
+		        android:layout_width="75dp"
+		        android:layout_height="wrap_content"
+		        android:text="@string/escoger" /> 
+		    	
+		    <CheckBox
+		    	android:id="@+id/checkboxSinIcono"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/sin_icono" /> 
+		    	
 		</LinearLayout>
 	 	
+		<LinearLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:orientation="horizontal"
+		    android:gravity="center_horizontal|bottom"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:paddingTop="5px"
+		    android:paddingBottom="10px">
+		    
+		    <LinearLayout
+				android:id="@+id/layoutWidget" 
+		    	android:layout_width="fill_parent"
+		    	android:layout_height="wrap_content"
+				xmlns:android="http://schemas.android.com/apk/res/android">
+		
+				<ImageView 
+					android:id="@+id/imagenWidget"
+					android:layout_width="60dp"
+					android:layout_height="60dp"
+			    	android:gravity="center_vertical|left"
+			    	android:padding="10px"
+			        android:scaleType="fitStart"
+			    	android:background="#000000"
+			        android:src="@drawable/icono001" />
+		
+				<TextView 
+					android:id="@+id/etiquetaWidget" 
+				    android:layout_width="fill_parent" 
+				    android:layout_height="60dp" 
+			    	android:gravity="center_vertical|left"
+				    android:text="@string/previsualizacion" 
+			    	android:textSize="30dp" 
+			    	android:textColor="#ffffff"
+			    	android:background="#000000"
+				    android:maxLines="2" />
+		
+			</LinearLayout>
+			
+		</LinearLayout>
+
 	    <Button
 	    	android:id="@+id/botonAceptar"
 	        android:layout_width="wrap_content"

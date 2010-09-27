@@ -9,24 +9,17 @@
    
     <string name="app_nueva">Nueva etiqueta</string>
     <string name="app_reconfigurar">Configurar etiqueta</string>
-    <string name="etiqueta_caption">Texto</string>
-    <string name="mostrar_icono">Mostrar icono</string>
-    <string name="icono_caption">Icono</string>
-
-    <string name="si">Si</string>
-    <string name="no">No</string>
-
-    <string name="estilo">Estilo</string>
     
-    <string name="blanco">Blanco</string>
-    <string name="negro">Negro</string>
-    <string name="amarillo">Amarillo</string>
-    <string name="azul">Azul</string>
-    <string name="morado">Morado</string>
-    <string name="naranja">Naranja</string>
-    <string name="rojo">Rojo</string>
-    <string name="verde">Verde</string>
+    <string name="etiqueta_caption">Texto</string>
+    <string name="icono">Icono</string>
+    <string name="color_fondo">Color fondo</string>
+    <string name="color_texto">Color texto</string>
+    <string name="escoger">Escoger</string>
     <string name="transparente">Transparente</string>
+    <string name="vacio"></string>
+    <string name="sin_icono">Sin icono</string>
+    
+    <string name="previsualizacion">Ejemplo</string>
     
     <string name="nueva_texto">
     	Escribe a continuación el texto que deseas mostrar en la nueva etiqueta de escritorio:

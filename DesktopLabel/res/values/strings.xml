@@ -9,25 +9,18 @@
     
     <string name="app_nueva">New label</string>
     <string name="app_reconfigurar">Configure label</string>
-    <string name="etiqueta_caption">Text</string>
-    <string name="mostrar_icono">Show icon</string>
-    <string name="icono_caption">Icon</string>
     
-    <string name="si">Yes</string>
-    <string name="no">No</string>
-    
-    <string name="estilo">Style</string>
-    
-    <string name="blanco">White</string>
-    <string name="negro">Black</string>
-    <string name="amarillo">Yellow</string>
-    <string name="azul">Blue</string>
-    <string name="morado">Purple</string>
-    <string name="naranja">Orange</string>
-    <string name="rojo">Red</string>
-    <string name="verde">Green</string>
+    <string name="etiqueta_caption">Text</string>    
+    <string name="icono">Icon</string>
+    <string name="color_fondo">Back. color</string>
+    <string name="color_texto">Text color</string>
+    <string name="escoger">Pick</string>
     <string name="transparente">Transparent</string>
-
+    <string name="vacio"></string>
+    <string name="sin_icono">No icon</string>
+    
+    <string name="previsualizacion">Example</string>
+    
     <string name="nueva_texto">
     	Write here the text of the new desktop label:
     </string>
