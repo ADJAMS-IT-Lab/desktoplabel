@@ -29,4 +29,6 @@
     </string>
     <string name="boton_aceptar">Accept</string>
     
+    <string name="widget_actualizado">The widget configuration has been updated</string>
+    
 </resources>

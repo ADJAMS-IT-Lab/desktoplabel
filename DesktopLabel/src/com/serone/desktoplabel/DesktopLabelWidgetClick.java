@@ -12,6 +12,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -103,16 +104,6 @@ public class DesktopLabelWidgetClick extends Activity
         }
         else Utils.logAviso("Reconfigurando widget #"+this.idWidget);
 
-        // Cogemos la configuración actual del widget
-        SharedPreferences prefs=contexto.getSharedPreferences("DesktopLabel", 0);
-        
-        /*
-        String etiqueta=prefs.getString("Etiqueta"+this.idWidget, "DesktopLabel");
-        this.nImagen=prefs.getInt("Icono"+this.idWidget, 1);
-        int estilo=prefs.getInt("Estilo"+this.idWidget, 0);
-        boolean mostrarIcono=prefs.getBoolean("MostrarIcono"+this.idWidget, true);
-		*/
-        
         // Cogemos los controles
         this.etiqueta=(EditText)findViewById(R.id.etiqueta);
         
@@ -140,6 +131,24 @@ public class DesktopLabelWidgetClick extends Activity
 		this.imagenWidget.setMaxWidth(60);
 		
         // Reconfiguramos la vista con la configuración actual
+        SharedPreferences prefs=contexto.getSharedPreferences("DesktopLabel", 0);
+        
+        this.etiqueta.setText(prefs.getString("Widget="+this.idWidget+" (Etiqueta)", "DesktopLabel"));
+        
+        this.colorFondo=prefs.getInt("Widget="+this.idWidget+" (ColorFondo)", Color.BLACK);
+        boolean colorFondoActivoConfig=prefs.getBoolean("Widget="+this.idWidget+" (MostrarColorFondo)", true);
+        this.checkboxColorFondo.setChecked(colorFondoActivoConfig);
+        
+        this.colorTexto=prefs.getInt("Widget="+this.idWidget+" (ColorTexto)", Color.WHITE);
+        boolean colorTextoActivoConfig=prefs.getBoolean("Widget="+this.idWidget+" (MostrarColorTexto)", true);
+        this.checkboxColorTexto.setChecked(colorTextoActivoConfig);
+        
+        this.icono=prefs.getInt("Widget="+this.idWidget+" (Icono)", 1);
+        boolean iconoActivoConfig=prefs.getBoolean("Widget="+this.idWidget+" (MostrarIcono)", true);
+        this.checkboxIcono.setChecked(iconoActivoConfig);
+        
+        // Actualizamos la vista previa
+        this.actualizarVistaPrevia();
     }
 
     /**
@@ -179,17 +188,18 @@ public class DesktopLabelWidgetClick extends Activity
 	        this.setResult(RESULT_OK, okResult);
 	
 	        // Forzamos la primera actualización
+	        // FIXME: Coger las dimensiones según el widget creado
+	        /*
 	        AppWidgetManager appWidgetManager=AppWidgetManager.getInstance(contexto);
 	        
-	        /*
 	        DesktopLabelWidgetStatic.actualizar(
-	        	contexto, appWidgetManager, this.idWidget, etiquetaFinal, this.nImagen,
-	        	estilo, mostrarIcono);
+		        	contexto, appWidgetManager, this.idWidget, etiquetaFinal,
+		        	this.icono, this.iconoActivo, this.colorFondo, this.colorFondoActivo,
+		        	this.colorTexto, this.colorTextoActivo);
 			*/
-			
+	        
             // Mostramos al usuario
-	        // FIXME: Ántes de activar hacer multiidioma
-            //Utils.mostrarToast(contexto, "Se ha actualizado la configuración del ID del widget.");
+	        Utils.mostrarToast(contexto, this.getString(R.string.widget_actualizado));
             
 	        // Salimos
 	    	Utils.logInfo("Configuración del widget completada (etiqueta="+etiquetaFinal+")");
@@ -209,7 +219,19 @@ public class DesktopLabelWidgetClick extends Activity
 		{
 		}
 	}
-
+	/**
+	 * Actualiza la vista previa
+	 */
+	public void actualizarVistaPrevia()
+	{
+		this.imagenWidget.setBackgroundColor(this.colorFondo);
+        this.etiquetaWidget.setBackgroundColor(this.colorFondo);
+        
+		this.etiquetaWidget.setTextColor(this.colorTexto);
+		
+		this.cambiarIcono(this.icono);
+	}
+	
 	/**
 	 * Atiende a los cambios de icono 
 	 */
@@ -230,6 +252,7 @@ public class DesktopLabelWidgetClick extends Activity
 			
 		    // Quitamos el icono
 			this.imagenWidget.setImageResource(R.drawable.vacio);
+			this.imagenWidget.setVisibility(View.GONE); 
 		}
 		else
 		{

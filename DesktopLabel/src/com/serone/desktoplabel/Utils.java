@@ -76,4 +76,34 @@ public class Utils
     	Toast toast = Toast.makeText(contexto, texto, duracion);
     	toast.show();
     }
+
+    /**
+     * Convierte densitypixels a pixels
+     * @param dp los DPs a convertir
+     * @return La medida en pixels
+     */
+	public static int medidaWidgetAPixles(Context contexto, String dimension, int casillas)
+	{
+		// Referencias
+		//  - http://developer.android.com/guide/topics/appwidgets/index.html
+		
+		// Vemos que un cuadro de 1x1 es de 80x100 para una pantalla de 320x480,
+		// por lo que sacaremos las medidas con reglas de 3
+		
+		// Pantalla
+		int anchuraPantalla=contexto.getResources().getDisplayMetrics().widthPixels;
+		int alturaPantalla=contexto.getResources().getDisplayMetrics().heightPixels;
+		
+		// Dimensiones por casilla
+		int anchuraCasilla=(anchuraPantalla*80)/320;
+		int alturaCasilla=(alturaPantalla*100)/480;
+		
+		// Convertimos
+		int px=0;
+		
+		if(dimension=="altura") px=(casillas*alturaCasilla);
+		else px=(casillas*anchuraCasilla);
+
+		return px;
+	}
 }

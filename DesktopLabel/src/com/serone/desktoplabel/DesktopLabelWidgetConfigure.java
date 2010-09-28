@@ -168,12 +168,14 @@ public class DesktopLabelWidgetConfigure extends Activity
 	        this.setResult(RESULT_OK, okResult);
 	
 	        // Forzamos la primera actualización
+	        // FIXME: Coger las dimensiones según el widget creado
+	        /*
 	        AppWidgetManager appWidgetManager=AppWidgetManager.getInstance(contexto);
 	        
-	        /*
 	        DesktopLabelWidgetStatic.actualizar(
-	        	contexto, appWidgetManager, this.idWidget, etiquetaFinal, this.nImagen,
-	        	estilo, mostrarIcono);
+	        	contexto, appWidgetManager, this.idWidget, etiquetaFinal,
+	        	this.icono, this.iconoActivo, this.colorFondo, this.colorFondoActivo,
+	        	this.colorTexto, this.colorTextoActivo);
 	        */
 	        
 	        // Salimos
@@ -215,6 +217,7 @@ public class DesktopLabelWidgetConfigure extends Activity
 			
 		    // Quitamos el icono
 			this.imagenWidget.setImageResource(R.drawable.vacio);
+			this.imagenWidget.setVisibility(View.GONE); 
 		}
 		else
 		{
