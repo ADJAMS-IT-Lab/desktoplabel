@@ -210,14 +210,34 @@ public class DesktopLabelWidgetStatic
 			BitmapFactory.decodeResource(contexto.getResources(), resIcono),
 			null, new Rect(10, 10, altura-10, altura-10), p);
 			
-		// Dibujamos el texto
+		// Dibujamos el texto. Ajustaremos el tamaño de la fuente según la longitud 
+		// del texto, para que se vea bien. Podremos incluso partirlo en dos lineas
+		// si es necesario, pues ahora controlamos tan fuente como coordenadas de
+		// renderizado del texto. Tenemos el control ;)
 		p.setAntiAlias(true);
-
-		p.setStrokeWidth(3);
 		p.setColor(colorTexto);
-		p.setTextSize(altura/2); // La mitad de la altura
 		
-		canvas.drawText(etiqueta, altura, ((altura/4)*3), p); // Lo posicionamos a 3/4 de la altura
+		// FIXME: Evaluar las posiciones y dimensiones según tamaño
+		// FIXME: Meter más saltos para más tamaños, para que escale mejor
+		
+		if(etiqueta.length()>19)
+		{
+			p.setStrokeWidth(3);
+			p.setTextSize(altura/2);
+			canvas.drawText(etiqueta, altura, ((altura/4)*3), p);
+		}
+		else if(etiqueta.length()>16)
+		{
+			p.setStrokeWidth(3);
+			p.setTextSize(altura/2);
+			canvas.drawText(etiqueta, altura, ((altura/4)*3), p);
+		}
+		else if(etiqueta.length()>13)
+		{
+			p.setStrokeWidth(3);
+			p.setTextSize(altura/2);
+			canvas.drawText(etiqueta, altura, ((altura/4)*3), p);
+		}
 		
 		// Establecemos el canvas
 		vistaActualizada.setImageViewBitmap(R.id.imagenWidget, bitmap);
@@ -247,85 +267,6 @@ public class DesktopLabelWidgetStatic
 	    // Actualizamos
 		Utils.logInfo("Actualizando Widget id="+idWidget+" ("+etiqueta+")...");
 		appWidgetManager.updateAppWidget(idWidget, vistaActualizada);
-		
-	    /*
-		// Creamos la vista desde el layout, según los parámetros dados
-		if(iconoActivo)
-		{
-			// Con icono
-			vistaActualizada=new RemoteViews(contexto.getPackageName(),R.layout.layout_widget_con_icono);			
-
-		    // Cambiamos la imagen
-			     if(icono==1)  resIcono=R.drawable.icono001);
-			else if(icono==2)  resIcono=R.drawable.icono002);
-			else if(icono==3)  resIcono=R.drawable.icono003);
-			else if(icono==4)  resIcono=R.drawable.icono004);
-			else if(icono==5)  resIcono=R.drawable.icono005);
-			else if(icono==6)  resIcono=R.drawable.icono006);
-			else if(icono==7)  resIcono=R.drawable.icono007);
-			else if(icono==8)  resIcono=R.drawable.icono008);
-			else if(icono==9)  resIcono=R.drawable.icono009);
-			else if(icono==10) resIcono=R.drawable.icono010);
-			else if(icono==11) resIcono=R.drawable.icono011);
-			else if(icono==12) resIcono=R.drawable.icono012);
-			else if(icono==13) resIcono=R.drawable.icono013);
-			else if(icono==14) resIcono=R.drawable.icono014);
-			else if(icono==15) resIcono=R.drawable.icono015);
-			else if(icono==16) resIcono=R.drawable.icono016);
-			else if(icono==17) resIcono=R.drawable.icono017);
-			else if(icono==18) resIcono=R.drawable.icono018);
-			else if(icono==19) resIcono=R.drawable.icono019);
-			else if(icono==20) resIcono=R.drawable.icono020);
-			else if(icono==21) resIcono=R.drawable.icono021);
-			else if(icono==22) resIcono=R.drawable.icono022);
-			else if(icono==23) resIcono=R.drawable.icono023);
-			else if(icono==24) resIcono=R.drawable.icono024);
-			else if(icono==25) resIcono=R.drawable.icono025);
-			else if(icono==26) resIcono=R.drawable.icono026);
-			else if(icono==27) resIcono=R.drawable.icono027);
-			else if(icono==28) resIcono=R.drawable.icono028);
-		}
-		else
-		{
-			// Sin icono
-			vistaActualizada=new RemoteViews(contexto.getPackageName(),	R.layout.layout_widget_sin_icono);	
-		}
-
-		// Modificamos los colores del texto
-		if(colorTextoActivo)
-		{
-			vistaActualizada.setTextColor(R.id.etiquetaWidget, colorTexto);
-		}
-		else
-		{
-			vistaActualizada.setTextColor(R.id.etiquetaWidget, Color.TRANSPARENT);
-		}
-
-		// Modificamos los colores del fondo
-		if(colorFondoActivo)
-		{
-			vistaActualizada.setBitmap(R.id.layoutWidget, "setBackgroundResource",
-					BitmapFactory.decodeResource(contexto.getResources(), R.drawable.icono010));
-		}
-		else
-		{
-			vistaActualizada.setBitmap(R.id.layoutWidget, "setBackgroundResource",
-				BitmapFactory.decodeResource(contexto.getResources(), R.drawable.vacio));
-		}
-		
-		// Ajustamos el tamaño de la fuente según la longitud del texto
-		     if(etiqueta.length()>34) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", 10);
-		else if(etiqueta.length()>31) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", (float) 12.5);
-		else if(etiqueta.length()>28) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", 15);
-		else if(etiqueta.length()>25) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", (float) 17.5);
-		else if(etiqueta.length()>22) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", 20);
-		else if(etiqueta.length()>19) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", (float) 22.5);
-		else if(etiqueta.length()>16) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", 25);
-		else if(etiqueta.length()>13) vistaActualizada.setFloat(R.id.etiquetaWidget, "setTextSize", (float) 27.5);
-		
-	    // Ponemos la etiqueta
-	    vistaActualizada.setTextViewText(R.id.etiquetaWidget, etiqueta);
-		*/
 	}
 	
 	/**
