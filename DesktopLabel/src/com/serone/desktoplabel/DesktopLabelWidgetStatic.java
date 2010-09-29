@@ -53,18 +53,17 @@ public class DesktopLabelWidgetStatic
     	{
     		Utils.logInfo("Procesando widget #"+appWidgetIds[i]+"...");
     		
-        	// Cargamos las shared preferences
-            SharedPreferences prefs=contexto.getSharedPreferences("DesktopLabel", 0);
-            
+    		// Configuración del widget
             String etiqueta="";
             int colorFondo=Color.BLACK; boolean colorFondoActivo=true;
             int colorTexto=Color.WHITE; boolean colorTextoActivo=true;
-            int icono=1; boolean iconoActivo=true;            
+            int icono=1; boolean iconoActivo=true; int posicionIcono=1;          
 
             // Cargamos los parámetros, modificándolos si vienen de otras versiones
+    		SharedPreferences prefs=contexto.getSharedPreferences("DesktopLabel", 0);
             etiqueta=prefs.getString("Etiqueta"+appWidgetIds[i], "[[ERROR]]");
             
-            if(etiqueta=="[[ERROR]]")
+            if(etiqueta!="[[ERROR]]")
             {
             	// Viene de una versión anterior a la 1.4.0 (versionCode=7)
                 etiqueta=DesktopLabelWidgetStatic.actualizarValor(
@@ -108,7 +107,11 @@ public class DesktopLabelWidgetStatic
         		prefsEditor.remove("Estilo"+appWidgetIds[i]);
         		prefsEditor.remove("MostrarIcono"+appWidgetIds[i]);
 
+        		prefsEditor.commit();
+        		
     	        // Guardamos los nuevos datos
+        		prefsEditor=contexto.getSharedPreferences("DesktopLabel", 0).edit();
+        		
         		prefsEditor.putString( "Widget="+appWidgetIds[i]+" (Etiqueta)", 		 etiqueta);
 
         		prefsEditor.putInt(	   "Widget="+appWidgetIds[i]+" (ColorFondo)", 		 colorFondo);
@@ -118,13 +121,25 @@ public class DesktopLabelWidgetStatic
     	        prefsEditor.putBoolean("Widget="+appWidgetIds[i]+" (MostrarColorTexto)", colorTextoActivo);
     	        
     	        prefsEditor.putInt(	   "Widget="+appWidgetIds[i]+" (Icono)", 			 icono);
-    	        prefsEditor.putBoolean("Widget="+appWidgetIds[i]+" (MostrarIcono)", 	 iconoActivo);    	        
-        		
-        		// Commit final
+    	        prefsEditor.putBoolean("Widget="+appWidgetIds[i]+" (MostrarIcono)", 	 iconoActivo); 
+    	        prefsEditor.putInt(    "Widget="+appWidgetIds[i]+" (PosicionIcono)", 	 1);
+
+    	        // Siempre guardamos la altura y anchura
+    	        prefsEditor.putInt(    "Widget="+appWidgetIds[i]+" (Altura)", 	 		 altura);
+    	        prefsEditor.putInt(    "Widget="+appWidgetIds[i]+" (Anchura)", 	 		 anchura);
+    	        
         		prefsEditor.commit();
             }
             else
             {
+    	        // Siempre guardamos la altura y anchura
+        		SharedPreferences.Editor prefsEditor=contexto.getSharedPreferences("DesktopLabel", 0).edit();
+        		
+    	        prefsEditor.putInt(    "Widget="+appWidgetIds[i]+" (Altura)", 	 		 altura);
+    	        prefsEditor.putInt(    "Widget="+appWidgetIds[i]+" (Anchura)", 	 		 anchura);
+    	        
+        		prefsEditor.commit();
+        		
             	// Viene de una versión 1.4.0 (versionCode=7) o posterior
                 etiqueta=        prefs.getString( "Widget="+appWidgetIds[i]+" (Etiqueta)", 			"DesktopLabel");
                 colorFondo=      prefs.getInt(    "Widget="+appWidgetIds[i]+" (ColorFondo)", 		Color.BLACK);
@@ -133,13 +148,14 @@ public class DesktopLabelWidgetStatic
                 colorTextoActivo=prefs.getBoolean("Widget="+appWidgetIds[i]+" (MostrarColorTexto)", true);
                 icono=           prefs.getInt(    "Widget="+appWidgetIds[i]+" (Icono)", 			1);
                 iconoActivo=     prefs.getBoolean("Widget="+appWidgetIds[i]+" (MostrarIcono)", 		true);
+                posicionIcono=   prefs.getInt(    "Widget="+appWidgetIds[i]+" (PosicionIcono)", 	1);
             }
             
             // Actualizamos
 			DesktopLabelWidgetStatic.actualizar(
     			contexto, appWidgetManager, appWidgetIds[i], etiqueta, icono, iconoActivo,
     			colorFondo, colorFondoActivo, colorTexto, colorTextoActivo,
-    			anchura, altura);			
+    			anchura, altura, posicionIcono);			
 		}
     	
     	Utils.logInfo("Procesados "+appWidgetIds.length+" widgets :)");
@@ -152,26 +168,26 @@ public class DesktopLabelWidgetStatic
 		Context contexto, AppWidgetManager appWidgetManager, int idWidget,
 		String etiqueta, int icono, boolean iconoActivo, int colorFondo,
 		boolean colorFondoActivo, int colorTexto, boolean colorTextoActivo,
-		int anchura, int altura)
+		int anchura, int altura, int posicionIcono)
 	{
 	    RemoteViews vistaActualizada=null;
 
-	    colorTexto=Color.WHITE;
-	    colorFondo=Color.BLACK;
-	    
-	    Utils.logDebug("Creando un canvas de "+anchura+"x"+altura+"...");
-	    
 	    // Creamos la vista remota
 		vistaActualizada=new RemoteViews(contexto.getPackageName(),R.layout.layout_widget);	
 
 	    // Creamos el canvas sobre el que dibujaremos
+	    Utils.logDebug("Creando un canvas de "+anchura+"x"+altura+"...");
+	    
 		Paint p = new Paint();
+		p.setAntiAlias(true);
 		
 		Bitmap bitmap = Bitmap.createBitmap(anchura, altura, Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
-		
+
 		// Dibujamos el fondo
-		canvas.drawColor(colorFondo);
+		canvas.drawColor(Color.parseColor("#00FFFFFF"));
+		p.setColor(colorFondo);
+		canvas.drawRoundRect(new RectF(1, 1, anchura, altura), 10, 10, p);
 		
 		// Seleccionamos el recurso
 		int resIcono=1;
@@ -214,37 +230,40 @@ public class DesktopLabelWidgetStatic
 		// del texto, para que se vea bien. Podremos incluso partirlo en dos lineas
 		// si es necesario, pues ahora controlamos tan fuente como coordenadas de
 		// renderizado del texto. Tenemos el control ;)
-		p.setAntiAlias(true);
 		p.setColor(colorTexto);
 		
-		// FIXME: Evaluar las posiciones y dimensiones según tamaño
-		// FIXME: Meter más saltos para más tamaños, para que escale mejor
+		int alturaTexto=(altura/2);
+		int grosorTexto=3;
 		
-		if(etiqueta.length()>19)
+		// FIXME: El escalado debe de ser diferente para los widgets 3x1 y 2x1
+		
+		if(etiqueta.length()>22)
 		{
-			p.setStrokeWidth(3);
-			p.setTextSize(altura/2);
-			canvas.drawText(etiqueta, altura, ((altura/4)*3), p);
+			alturaTexto=(altura/5);
+			grosorTexto=2;
 		}
 		else if(etiqueta.length()>16)
 		{
-			p.setStrokeWidth(3);
-			p.setTextSize(altura/2);
-			canvas.drawText(etiqueta, altura, ((altura/4)*3), p);
+			alturaTexto=(altura/4);
+			grosorTexto=2;
 		}
-		else if(etiqueta.length()>13)
+		else if(etiqueta.length()>10)
 		{
-			p.setStrokeWidth(3);
-			p.setTextSize(altura/2);
-			canvas.drawText(etiqueta, altura, ((altura/4)*3), p);
+			alturaTexto=(altura/3);
+			grosorTexto=3;
 		}
+
+		p.setStrokeWidth(grosorTexto);
+		p.setTextSize(alturaTexto);
+		
+		canvas.drawText(etiqueta, altura, (altura/2)+(alturaTexto/2), p);
 		
 		// Establecemos el canvas
 		vistaActualizada.setImageViewBitmap(R.id.imagenWidget, bitmap);
 
 	    // Creamos un intent para lanzar la actividad de reconfiguración
 	    // Le añadiremos el id del widget, para saber a quien nos referimos
-		Utils.logInfo("Asociando Widget id="+idWidget+" a eventos...");
+		Utils.logDebug("Asociando Widget id="+idWidget+" a eventos...");
 		
 		try
 		{
@@ -277,7 +296,7 @@ public class DesktopLabelWidgetStatic
 	public static String actualizarValor(String parametro, String valorActual)
 	{
 		// Las cadenas las devolvemos sin modificar
-		Utils.logDebug("actualizarValor('"+parametro+"', "+valorActual+") = "+valorActual);
+		//Utils.logDebug("actualizarValor('"+parametro+"', "+valorActual+") = "+valorActual);
 		return valorActual;
 	}
 	
@@ -332,7 +351,7 @@ public class DesktopLabelWidgetStatic
 			valorModificado=valorActual;
 		}
 
-		Utils.logDebug("actualizarValor('"+parametro+"', "+valorActual+") = "+valorModificado);
+		//Utils.logDebug("actualizarValor('"+parametro+"', "+valorActual+") = "+valorModificado);
 		return valorModificado;
 		
 	}
@@ -363,7 +382,7 @@ public class DesktopLabelWidgetStatic
 			valorModificado=(valorActual==1?true:false);
 		}
 
-		Utils.logDebug("actualizarValor('"+parametro+"', "+valorActual+") = "+valorModificado);
+		//Utils.logDebug("actualizarValor('"+parametro+"', "+valorActual+") = "+valorModificado);
 		return valorModificado;
 		
 	}

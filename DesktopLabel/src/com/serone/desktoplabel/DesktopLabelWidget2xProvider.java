@@ -39,7 +39,7 @@ public class DesktopLabelWidget2xProvider extends AppWidgetProvider
 	 */
 	public void onDeleted(Context contexto, int[] appWidgetIds)
     {
-		Utils.logDebug("== onDeleted 4x ==");
+		Utils.logDebug("== onDeleted 2x ==");
 
     	// Por cada ID que haya
     	for(int i=0; i<appWidgetIds.length; i++)

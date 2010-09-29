@@ -31,4 +31,14 @@
    
     <string name="widget_actualizado">Se ha actualizado la configuración del widget</string>
     
+    <!-- Diálogos SeROne -->
+    
+    <string name="serone_comun_aceptar">Aceptar</string>
+    
+    <string name="serone_color_titulo">Escoge un color</string>
+    <string name="serone_color_texto">Escoge un color y pulsa \'Aceptar\' para cerrar el diálogo.</string>
+    
+    <string name="serone_icono_titulo">Escoge un icono</string>
+    <string name="serone_icono_texto">Escoge un icono y pulsa \'Aceptar\' para cerrar el diálogo.</string>
+    
 </resources>

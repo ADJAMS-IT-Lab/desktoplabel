@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView 
+	xmlns:android="http://schemas.android.com/apk/res/android" 
+	android:layout_width="fill_parent" android:layout_height="fill_parent"> 
+
+	<LinearLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:orientation="vertical"
+	    android:gravity="right"
+	    android:paddingLeft="10px"
+	    android:paddingRight="10px"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent">
+	 	
+		<TextView  
+		    android:layout_width="fill_parent" 
+		    android:layout_height="wrap_content" 
+		    android:text="@string/serone_icono_titulo" 
+	    	android:paddingBottom="5px"
+	    	android:textSize="32dp" />
+		    
+		<TextView  
+		    android:layout_width="fill_parent" 
+		    android:layout_height="wrap_content" 
+		    android:text="@string/serone_icono_texto" 
+	    	android:paddingBottom="10px" />
+	    	
+	    <Button
+	    	android:id="@+id/botonAceptar"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/serone_comun_aceptar"  
+	    	android:paddingBottom="10px" />
+	
+	</LinearLayout>
+	
+</ScrollView>

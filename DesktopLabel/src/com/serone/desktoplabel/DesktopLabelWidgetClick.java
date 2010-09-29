@@ -31,8 +31,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
  * Configurador del widget en tiempo de ejecución
  * @author doctor@serone.org
  */
-public class DesktopLabelWidgetClick extends Activity
-	implements OnClickListener, ColorPickerDialog.OnColorChangedListener, OnCheckedChangeListener
+public class DesktopLabelWidgetClick extends Activity implements OnClickListener, OnCheckedChangeListener
 {
 	// ID del widget
 	private int idWidget=AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -59,6 +58,7 @@ public class DesktopLabelWidgetClick extends Activity
 	private boolean colorTextoActivo=true;
 	private int icono=1;
 	private boolean iconoActivo=true;
+	private int posicionIcono=1; // 1=izquierda, 2=derecha
 	
 	// Diálogos
 	
@@ -137,15 +137,15 @@ public class DesktopLabelWidgetClick extends Activity
         
         this.colorFondo=prefs.getInt("Widget="+this.idWidget+" (ColorFondo)", Color.BLACK);
         boolean colorFondoActivoConfig=prefs.getBoolean("Widget="+this.idWidget+" (MostrarColorFondo)", true);
-        this.checkboxColorFondo.setChecked(colorFondoActivoConfig);
+        this.checkboxColorFondo.setChecked(!colorFondoActivoConfig);
         
         this.colorTexto=prefs.getInt("Widget="+this.idWidget+" (ColorTexto)", Color.WHITE);
         boolean colorTextoActivoConfig=prefs.getBoolean("Widget="+this.idWidget+" (MostrarColorTexto)", true);
-        this.checkboxColorTexto.setChecked(colorTextoActivoConfig);
+        this.checkboxColorTexto.setChecked(!colorTextoActivoConfig);
         
         this.icono=prefs.getInt("Widget="+this.idWidget+" (Icono)", 1);
         boolean iconoActivoConfig=prefs.getBoolean("Widget="+this.idWidget+" (MostrarIcono)", true);
-        this.checkboxIcono.setChecked(iconoActivoConfig);
+        this.checkboxIcono.setChecked(!iconoActivoConfig);
         
         // Actualizamos la vista previa
         this.actualizarVistaPrevia();
@@ -179,6 +179,7 @@ public class DesktopLabelWidgetClick extends Activity
 	        
 	        prefs.putInt(	 "Widget="+this.idWidget+" (Icono)", 			 this.icono);
 	        prefs.putBoolean("Widget="+this.idWidget+" (MostrarIcono)", 	 this.iconoActivo);
+	        prefs.putInt(    "Widget="+this.idWidget+" (PosicionIcono)", 	 this.posicionIcono);
 	        
 	        prefs.commit();
 			
@@ -186,17 +187,21 @@ public class DesktopLabelWidgetClick extends Activity
 	    	Intent okResult=new Intent();
 	    	okResult.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, this.idWidget);
 	        this.setResult(RESULT_OK, okResult);
-	
+
+	        // Cogemos las dimensiones del widget
+	        SharedPreferences pref=contexto.getSharedPreferences("DesktopLabel", 0);
+	        
+	        int anchura=pref.getInt( "Widget="+this.idWidget+" (Anchura)", 0);
+	        int altura=pref.getInt("Widget="+this.idWidget+" (Altura)", 0);
+	        
 	        // Forzamos la primera actualización
-	        // FIXME: Coger las dimensiones según el widget creado
-	        /*
 	        AppWidgetManager appWidgetManager=AppWidgetManager.getInstance(contexto);
 	        
 	        DesktopLabelWidgetStatic.actualizar(
-		        	contexto, appWidgetManager, this.idWidget, etiquetaFinal,
-		        	this.icono, this.iconoActivo, this.colorFondo, this.colorFondoActivo,
-		        	this.colorTexto, this.colorTextoActivo);
-			*/
+	        	contexto, appWidgetManager, this.idWidget, etiquetaFinal,
+	        	this.icono, this.iconoActivo, this.colorFondo, this.colorFondoActivo,
+	        	this.colorTexto, this.colorTextoActivo, anchura, altura, 
+	        	this.posicionIcono);
 	        
             // Mostramos al usuario
 	        Utils.mostrarToast(contexto, this.getString(R.string.widget_actualizado));
@@ -208,17 +213,27 @@ public class DesktopLabelWidgetClick extends Activity
 		else if(v==(View)this.botonColorFondo)
 		{
 			this.coloreandoAhora=1;
-			new ColorPickerDialog(this, this, Color.BLACK).show();
+			
+			// Mostramos la actividad
+            Intent nuevoIntent = new Intent(v.getContext(), SeroneWidgetColor.class);
+            this.startActivityForResult(nuevoIntent, 0);
 		}
 		else if(v==(View)this.botonColorTexto)
 		{
 			this.coloreandoAhora=2;
-			new ColorPickerDialog(this, this, Color.WHITE).show();
+			
+			// Mostramos la actividad
+            Intent nuevoIntent = new Intent(v.getContext(), SeroneWidgetColor.class);
+            this.startActivityForResult(nuevoIntent, 1);
 		}
 		else if(v==(View)this.botonIcono)
 		{
+			// Mostramos la actividad
+            Intent nuevoIntent = new Intent(v.getContext(), SeroneWidgetIcono.class);
+            this.startActivityForResult(nuevoIntent, 2);
 		}
 	}
+	
 	/**
 	 * Actualiza la vista previa
 	 */
@@ -238,7 +253,7 @@ public class DesktopLabelWidgetClick extends Activity
 	public void cambiarIcono(int numIcono)
 	{	
 		this.icono=numIcono;
-		this.iconoActivo=this.checkboxColorTexto.isChecked();
+		this.iconoActivo=!this.checkboxColorTexto.isChecked();
 
 		// Cambiamos la visibilidad del icono
 		if(this.checkboxIcono.isChecked())
@@ -296,16 +311,17 @@ public class DesktopLabelWidgetClick extends Activity
 	}
 	
 	/**
-	 * Atiende a los cambios de color 
+	 * Atiende a los cambios de color y de icono
 	 */
-	public void colorChanged(int color)
+	public void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
-		switch(this.coloreandoAhora)
+		switch(requestCode)
 		{
-			case 1:
+			case 0:
 			{
-				this.colorFondo=color;
-				this.colorFondoActivo=this.checkboxColorFondo.isChecked();
+				// Color de fondo
+				this.colorFondo=resultCode;
+				this.colorFondoActivo=!this.checkboxColorFondo.isChecked();
 				
 				// Coloreamos
 				if(this.checkboxColorFondo.isChecked())
@@ -315,8 +331,30 @@ public class DesktopLabelWidgetClick extends Activity
 				}
 				else
 				{
-					this.imagenWidget.setBackgroundColor(color);
-			        this.etiquetaWidget.setBackgroundColor(color);
+					this.imagenWidget.setBackgroundColor(resultCode);
+			        this.etiquetaWidget.setBackgroundColor(resultCode);
+				}
+				
+		        // Reseteamos
+		        this.coloreandoAhora=0;
+		        
+				break;
+			}
+			
+			case 1:
+			{
+				// Color de texto
+				this.colorTexto=resultCode;
+				this.colorTextoActivo=!this.checkboxColorTexto.isChecked();
+				
+				// Coloreamos
+				if(this.checkboxColorTexto.isChecked())
+				{
+					this.etiquetaWidget.setTextColor(Color.TRANSPARENT);
+				}
+				else
+				{
+					this.etiquetaWidget.setTextColor(resultCode);
 				}
 				
 		        // Reseteamos
@@ -327,27 +365,7 @@ public class DesktopLabelWidgetClick extends Activity
 			
 			case 2:
 			{
-				this.colorTexto=color;
-				this.colorTextoActivo=this.checkboxColorTexto.isChecked();
-				
-				// Coloreamos
-				if(this.checkboxColorTexto.isChecked())
-				{
-					this.etiquetaWidget.setTextColor(Color.TRANSPARENT);
-				}
-				else
-				{
-					this.etiquetaWidget.setTextColor(color);
-				}
-				
-		        // Reseteamos
-		        this.coloreandoAhora=0;
-		        
-				break;
-			}
-			
-			default:
-			{
+				// Color de icono
 				break;
 			}
 		}
@@ -361,12 +379,12 @@ public class DesktopLabelWidgetClick extends Activity
 		if(v==(View)this.checkboxColorFondo)
 		{
 	        this.coloreandoAhora=1;
-			this.colorChanged(this.colorFondo);
+			this.actualizarVistaPrevia();
 		}
 		else if(v==(View)this.checkboxColorTexto)
 		{
 	        this.coloreandoAhora=2;
-			this.colorChanged(this.colorTexto);
+			this.actualizarVistaPrevia();
 		}
 		else if(v==(View)this.checkboxIcono)
 		{
