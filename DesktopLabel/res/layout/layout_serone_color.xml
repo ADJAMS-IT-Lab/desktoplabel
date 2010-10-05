@@ -26,13 +26,116 @@
 		    android:text="@string/serone_color_texto" 
 	    	android:paddingBottom="10px" />
 	    	
-	    <Button
-	    	android:id="@+id/botonAceptar"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/serone_comun_aceptar"  
-	    	android:paddingBottom="10px" />
-	
+		<LinearLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:orientation="horizontal"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+	    	android:paddingBottom="5px" >
+		    
+			<TextView  
+			    android:layout_width="80dp" 
+			    android:layout_height="wrap_content" 
+			    android:text="@string/selector_color_rojo" />
+			    
+	 		<SeekBar
+	 			android:id="@+id/seekBarRojo"
+		        android:layout_width="fill_parent" 
+		        android:layout_height="wrap_content" />
+		        
+		</LinearLayout>
+	 	
+		<LinearLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:orientation="horizontal"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+	    	android:paddingBottom="5px" >
+		    
+			<TextView  
+			    android:layout_width="80dp" 
+			    android:layout_height="wrap_content" 
+			    android:text="@string/selector_color_verde"  />
+	    	
+	 		<SeekBar
+	 			android:id="@+id/seekBarVerde"
+		        android:layout_width="fill_parent" 
+		        android:layout_height="wrap_content" />
+		        
+	 	</LinearLayout>
+	 	
+		<LinearLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:orientation="horizontal"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+	    	android:paddingBottom="5px" >
+		    
+			<TextView  
+			    android:layout_width="80dp" 
+			    android:layout_height="wrap_content" 
+			    android:text="@string/selector_color_azul"  />
+
+	 		<SeekBar
+	 			android:id="@+id/seekBarAzul"
+		        android:layout_width="fill_parent" 
+		        android:layout_height="wrap_content" />
+		        
+	 	</LinearLayout>
+	 	
+		<LinearLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:orientation="horizontal"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+	    	android:paddingBottom="10px" >
+		    
+			<TextView  
+			    android:layout_width="80dp" 
+			    android:layout_height="wrap_content" 
+			    android:text="@string/selector_color_transparencia"  />
+	    	
+	 		<SeekBar
+	 			android:id="@+id/seekBarTransparencia"
+		        android:layout_width="fill_parent" 
+		        android:layout_height="wrap_content" />
+		        
+	 	</LinearLayout>
+	 	
+	 	<LinearLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:orientation="horizontal"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:background="#FFffffff"
+	    	android:padding="2px" >
+		    
+			<TextView  
+	 			android:id="@+id/textViewVistaPrevia"
+			    android:layout_width="fill_parent" 
+			    android:layout_height="30dp" 
+	    		android:gravity="center"
+		    	android:background="#FF000000"
+			    android:text="@string/selector_vista_previa"  />
+		        
+	 	</LinearLayout>
+	 	
+	 	<LinearLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:orientation="horizontal"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+	    	android:gravity="right"
+		    android:paddingTop="10px">
+		    
+		    <Button
+		    	android:id="@+id/botonAceptar"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/serone_comun_aceptar" />
+	  
+	 	</LinearLayout>
+	 	
 	</LinearLayout>
 	
 </ScrollView>

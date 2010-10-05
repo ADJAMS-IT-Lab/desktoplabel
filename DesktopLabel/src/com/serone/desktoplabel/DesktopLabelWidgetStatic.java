@@ -55,9 +55,10 @@ public class DesktopLabelWidgetStatic
     		
     		// Configuración del widget
             String etiqueta="";
-            int colorFondo=Color.BLACK; boolean colorFondoActivo=true;
-            int colorTexto=Color.WHITE; boolean colorTextoActivo=true;
-            int icono=1; boolean iconoActivo=true; int posicionIcono=1;          
+            int colorFondo=Color.BLACK;
+            int colorTexto=Color.WHITE;
+            int icono=1;
+            int posicionIcono=1;          
 
             // Cargamos los parámetros, modificándolos si vienen de otras versiones
     		SharedPreferences prefs=contexto.getSharedPreferences("DesktopLabel", 0);
@@ -71,33 +72,28 @@ public class DesktopLabelWidgetStatic
                 
                 colorFondo=DesktopLabelWidgetStatic.actualizarValor(
                     	"ColorFondo", prefs.getInt("Estilo"+appWidgetIds[i], 0));
-                colorFondoActivo=DesktopLabelWidgetStatic.actualizarValor(
-                    	"MostrarColorFondo", prefs.getInt("Estilo"+appWidgetIds[i], 0), true);
-                
                 colorTexto=DesktopLabelWidgetStatic.actualizarValor(
                     	"ColorTexto",prefs.getInt("Estilo"+appWidgetIds[i], 0));
-                colorTextoActivo=DesktopLabelWidgetStatic.actualizarValor(
-                    	"MostrarColorTexto", prefs.getInt("Estilo"+appWidgetIds[i], 0), true);
-                
                 icono=DesktopLabelWidgetStatic.actualizarValor(
                     	"Icono", prefs.getInt("Icono"+appWidgetIds[i], 1));
-                iconoActivo=DesktopLabelWidgetStatic.actualizarValor(
-                    	"MostrarIcono", (prefs.getBoolean("MostrarIcono"+appWidgetIds[i], true)?1:0), true);
+
+                // Quitamos el icono si antes estaba quitado
+                boolean mostrarIcono=prefs.getBoolean("MostrarIcono"+appWidgetIds[i], true);                    
+                if(!mostrarIcono) icono=0;
                 
         	    // Registramos
         	    Utils.logAviso("¡Se ha de cambiar la configuración de widget!");
-        	    
+
         	    Utils.logDebug("Configuración antigua del widget:");
         	    Utils.logDebug(" - Etiqueta: "+prefs.getString("Etiqueta"+appWidgetIds[i], "[[ERROR]]"));
         	    Utils.logDebug(" - Estilo: "+prefs.getInt("Estilo"+appWidgetIds[i], 0));
-        	    Utils.logDebug(" - Icono: "+prefs.getInt("Icono"+appWidgetIds[i], 1)+" ("+
-        	    	(prefs.getBoolean("MostrarIcono"+appWidgetIds[i], true)?"visible":"oculto")+")");
+        	    Utils.logDebug(" - Icono: "+prefs.getInt("Icono"+appWidgetIds[i], 1)+" ("+(mostrarIcono?"visible":"oculto")+")");
 
         	    Utils.logDebug("Configuración nueva del widget:");
         	    Utils.logDebug(" - Etiqueta: "+etiqueta);
-        	    Utils.logDebug(" - Color Fondo: "+colorFondo+" ("+(colorFondoActivo?"visible":"transparente")+")");
-        	    Utils.logDebug(" - Color Texto: "+colorTexto+" ("+(colorTextoActivo?"visible":"transparente")+")");
-        	    Utils.logDebug(" - Icono: "+icono+" ("+(iconoActivo?"visible":"oculto")+")");
+        	    Utils.logDebug(" - Color Fondo: "+colorFondo);
+        	    Utils.logDebug(" - Color Texto: "+colorTexto);
+        	    Utils.logDebug(" - Icono: "+icono);
         	    
     			// Borramos los datos guardados
         		SharedPreferences.Editor prefsEditor=contexto.getSharedPreferences("DesktopLabel", 0).edit();
@@ -113,15 +109,9 @@ public class DesktopLabelWidgetStatic
         		prefsEditor=contexto.getSharedPreferences("DesktopLabel", 0).edit();
         		
         		prefsEditor.putString( "Widget="+appWidgetIds[i]+" (Etiqueta)", 		 etiqueta);
-
         		prefsEditor.putInt(	   "Widget="+appWidgetIds[i]+" (ColorFondo)", 		 colorFondo);
-    	        prefsEditor.putBoolean("Widget="+appWidgetIds[i]+" (MostrarColorFondo)", colorFondoActivo);
-
     	        prefsEditor.putInt(	   "Widget="+appWidgetIds[i]+" (ColorTexto)", 		 colorTexto);
-    	        prefsEditor.putBoolean("Widget="+appWidgetIds[i]+" (MostrarColorTexto)", colorTextoActivo);
-    	        
     	        prefsEditor.putInt(	   "Widget="+appWidgetIds[i]+" (Icono)", 			 icono);
-    	        prefsEditor.putBoolean("Widget="+appWidgetIds[i]+" (MostrarIcono)", 	 iconoActivo); 
     	        prefsEditor.putInt(    "Widget="+appWidgetIds[i]+" (PosicionIcono)", 	 1);
 
     	        // Siempre guardamos la altura y anchura
@@ -143,19 +133,15 @@ public class DesktopLabelWidgetStatic
             	// Viene de una versión 1.4.0 (versionCode=7) o posterior
                 etiqueta=        prefs.getString( "Widget="+appWidgetIds[i]+" (Etiqueta)", 			"DesktopLabel");
                 colorFondo=      prefs.getInt(    "Widget="+appWidgetIds[i]+" (ColorFondo)", 		Color.BLACK);
-                colorFondoActivo=prefs.getBoolean("Widget="+appWidgetIds[i]+" (MostrarColorFondo)", true);
                 colorTexto=      prefs.getInt(    "Widget="+appWidgetIds[i]+" (ColorTexto)", 	    Color.WHITE);
-                colorTextoActivo=prefs.getBoolean("Widget="+appWidgetIds[i]+" (MostrarColorTexto)", true);
                 icono=           prefs.getInt(    "Widget="+appWidgetIds[i]+" (Icono)", 			1);
-                iconoActivo=     prefs.getBoolean("Widget="+appWidgetIds[i]+" (MostrarIcono)", 		true);
                 posicionIcono=   prefs.getInt(    "Widget="+appWidgetIds[i]+" (PosicionIcono)", 	1);
             }
             
             // Actualizamos
 			DesktopLabelWidgetStatic.actualizar(
-    			contexto, appWidgetManager, appWidgetIds[i], etiqueta, icono, iconoActivo,
-    			colorFondo, colorFondoActivo, colorTexto, colorTextoActivo,
-    			anchura, altura, posicionIcono);			
+    			contexto, appWidgetManager, appWidgetIds[i], etiqueta, icono,
+    			colorFondo, colorTexto,	anchura, altura, posicionIcono);			
 		}
     	
     	Utils.logInfo("Procesados "+appWidgetIds.length+" widgets :)");
@@ -166,9 +152,8 @@ public class DesktopLabelWidgetStatic
 	 */
 	public static void actualizar(
 		Context contexto, AppWidgetManager appWidgetManager, int idWidget,
-		String etiqueta, int icono, boolean iconoActivo, int colorFondo,
-		boolean colorFondoActivo, int colorTexto, boolean colorTextoActivo,
-		int anchura, int altura, int posicionIcono)
+		String etiqueta, int icono, int colorFondo,	int colorTexto,	int anchura,
+		int altura, int posicionIcono)
 	{
 	    RemoteViews vistaActualizada=null;
 
@@ -365,18 +350,7 @@ public class DesktopLabelWidgetStatic
 	{
 		boolean valorModificado=true;
 		
-
-		if(parametro=="MostrarColorFondo")
-		{
-			// Antes no se podía ocultar, es siempre true
-			valorModificado=true;
-		}
-		else if(parametro=="MostrarColorTexto")
-		{
-			// Antes no se podía ocultar, es siempre true
-			valorModificado=true;
-		}
-		else if(parametro=="MostrarIcono")
+		 if(parametro=="MostrarIcono")
 		{
 			// Valor directo
 			valorModificado=(valorActual==1?true:false);

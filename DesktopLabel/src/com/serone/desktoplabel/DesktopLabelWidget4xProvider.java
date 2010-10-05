@@ -55,11 +55,8 @@ public class DesktopLabelWidget4xProvider extends AppWidgetProvider
 			// Borramos los datos guardados (1.4.0 y posterior)
     		prefs.remove("Widget="+appWidgetIds[i]+" (Etiqueta)");
     		prefs.remove("Widget="+appWidgetIds[i]+" (ColorFondo)");
-	        prefs.remove("Widget="+appWidgetIds[i]+" (MostrarColorFondo)");
 	        prefs.remove("Widget="+appWidgetIds[i]+" (ColorTexto)");
-	        prefs.remove("Widget="+appWidgetIds[i]+" (MostrarColorTexto)");
 	        prefs.remove("Widget="+appWidgetIds[i]+" (Icono)");
-	        prefs.remove("Widget="+appWidgetIds[i]+" (MostrarIcono)"); 
 	        
 	        prefs.commit();
     	}

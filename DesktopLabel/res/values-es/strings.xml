@@ -38,6 +38,12 @@
     <string name="serone_color_titulo">Escoge un color</string>
     <string name="serone_color_texto">Escoge un color y pulsa \'Aceptar\' para cerrar el diálogo.</string>
     
+    <string name="selector_color_rojo">Rojo</string>
+    <string name="selector_color_verde">Verde</string>
+    <string name="selector_color_azul">Azul</string>
+    <string name="selector_color_transparencia">Transp.</string>
+    <string name="selector_vista_previa">Vista previa</string>
+    
     <string name="serone_icono_titulo">Escoge un icono</string>
     <string name="serone_icono_texto">Escoge un icono y pulsa \'Aceptar\' para cerrar el diálogo.</string>
     
