@@ -57,6 +57,8 @@ public class DesktopLabelWidget4xProvider extends AppWidgetProvider
     		prefs.remove("Widget="+appWidgetIds[i]+" (ColorFondo)");
 	        prefs.remove("Widget="+appWidgetIds[i]+" (ColorTexto)");
 	        prefs.remove("Widget="+appWidgetIds[i]+" (Icono)");
+	        prefs.remove("Widget="+appWidgetIds[i]+" (Anchura)");
+	        prefs.remove("Widget="+appWidgetIds[i]+" (Altura)");
 	        
 	        prefs.commit();
     	}
@@ -97,6 +99,8 @@ public class DesktopLabelWidget4xProvider extends AppWidgetProvider
 		// Cogemos las dimensiones concretas
 		int altura=Utils.medidaWidgetAPixles(contexto, "altura", 1);
 		int anchura=Utils.medidaWidgetAPixles(contexto, "anchura", 4);
+		
+		Utils.logInfo("Widget 1x4 - "+altura+"x"+anchura);
 		
 		// Modificamos con el margen del layout (15x25)
 		altura-=50;

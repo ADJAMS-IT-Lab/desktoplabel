@@ -62,7 +62,7 @@
 		    	android:id="@+id/botonColorFondo"
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
-		        android:text="@string/escoger" /> 
+		        android:text="@string/escoger_color" /> 
 		    	
 		</LinearLayout>
 	 	
@@ -82,7 +82,7 @@
 		    	android:id="@+id/botonColorTexto"
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
-		        android:text="@string/escoger" /> 
+		        android:text="@string/escoger_color" /> 
 		    
 		</LinearLayout>
 	 	
@@ -91,7 +91,7 @@
 		    android:orientation="horizontal"
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
-	    	android:paddingBottom="5px" >
+	    	android:paddingBottom="10px" >
 		    
 			<TextView  
 			    android:layout_width="80dp" 
@@ -102,17 +102,47 @@
 		    	android:id="@+id/botonIcono"
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
-		        android:text="@string/escoger" /> 
-		  
+		        android:text="@string/escoger_icono" /> 
+
 		</LinearLayout>
-	 	
-	    <Button
-	    	android:id="@+id/botonAceptar"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/boton_aceptar"  
-	    	android:paddingBottom="10px" />
+
+		<LinearLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+			android:id="@+id/layoutWidget"
+		    android:orientation="horizontal"
+		    android:gravity="center_horizontal|center_vertical"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:paddingTop="6px"
+		    android:paddingBottom="6px"
+		    android:paddingLeft="8px"
+		    android:paddingRight="8px"
+		    android:background="@drawable/fondo_vista_previa">
+		
+			<ImageView 
+				android:id="@+id/imagenWidget"
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent"
+		        android:src="@drawable/vacio" />
+		
+		</LinearLayout>
+		
+		<LinearLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:orientation="horizontal"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:paddingTop="10px" 
+	    	android:paddingBottom="10px" >
+		    
+		    <Button
+		    	android:id="@+id/botonAceptar"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/boton_aceptar" />
 	
+		</LinearLayout>
+		
 	</LinearLayout>
 	
 </ScrollView>

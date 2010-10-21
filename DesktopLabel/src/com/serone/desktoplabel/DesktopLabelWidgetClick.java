@@ -13,16 +13,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Display;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -31,8 +39,10 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
  * Configurador del widget en tiempo de ejecución
  * @author doctor@serone.org
  */
-public class DesktopLabelWidgetClick extends Activity implements OnClickListener
+public class DesktopLabelWidgetClick extends Activity implements OnClickListener, OnKeyListener
 {
+	private Context contexto=null;
+	
 	// ID del widget
 	private int idWidget=AppWidgetManager.INVALID_APPWIDGET_ID;
 	
@@ -44,11 +54,17 @@ public class DesktopLabelWidgetClick extends Activity implements OnClickListener
 	private Button botonColorTexto;
 	private Button botonIcono;
 	
+	private ImageView vistaPrevia=null;
+	private LinearLayout layoutWidget=null;
+	
 	// Configuración final
 	private int colorFondo=Color.BLACK;
 	private int colorTexto=Color.WHITE;
 	private int icono=1;
 	private int posicionIcono=1; // 1=izquierda, 2=derecha
+
+	private int alturaWidget=0;
+	private int anchuraWidget=0;
 	
 	// Coloreando ahora (0=nada, 1=fondo, 2=texto)
 	int coloreandoAhora=0;
@@ -60,7 +76,7 @@ public class DesktopLabelWidgetClick extends Activity implements OnClickListener
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        Context contexto=this.getApplicationContext();
+        this.contexto=this.getApplicationContext();
         
         // Especificamos el layout
         setContentView(R.layout.layout_actividad_click);
@@ -94,6 +110,7 @@ public class DesktopLabelWidgetClick extends Activity implements OnClickListener
 
         // Cogemos los controles
         this.etiqueta=(EditText)findViewById(R.id.etiqueta);
+        this.etiqueta.setOnKeyListener(this);
         
         this.botonOK=(Button)findViewById(R.id.botonAceptar);
         this.botonOK.setOnClickListener(this);
@@ -104,13 +121,39 @@ public class DesktopLabelWidgetClick extends Activity implements OnClickListener
         this.botonIcono=(Button)findViewById(R.id.botonIcono);
         this.botonIcono.setOnClickListener(this);
 
+        this.vistaPrevia=(ImageView)findViewById(R.id.imagenWidget);
+        this.layoutWidget=(LinearLayout)findViewById(R.id.layoutWidget);
+        
         // Reconfiguramos la vista con la configuración actual
         SharedPreferences prefs=contexto.getSharedPreferences("DesktopLabel", 0);
         
-        this.etiqueta.setText(prefs.getString("Widget="+this.idWidget+" (Etiqueta)", "DesktopLabel"));
+        this.etiqueta.  setText(prefs.getString("Widget="+this.idWidget+" (Etiqueta)", "DesktopLabel"));
         this.colorFondo=prefs.getInt("Widget="+this.idWidget+" (ColorFondo)", Color.BLACK);
         this.colorTexto=prefs.getInt("Widget="+this.idWidget+" (ColorTexto)", Color.WHITE);
-        this.icono=prefs.getInt("Widget="+this.idWidget+" (Icono)", 1);
+        this.icono=     prefs.getInt("Widget="+this.idWidget+" (Icono)", 1);
+
+        // Cogemos las dimensiones
+        this.alturaWidget=prefs.getInt("Widget="+this.idWidget+" (Altura)", 0);
+        this.anchuraWidget=prefs.getInt("Widget="+this.idWidget+" (Anchura)", 0);
+
+		// Cambiamos de tamaño al layout
+		LayoutParams pars=this.layoutWidget.getLayoutParams();
+
+		pars.height=this.alturaWidget+12;
+		pars.width=this.anchuraWidget+16;
+		
+		this.layoutWidget.setLayoutParams(pars);
+		
+		// Cambiamos el tamaño a la imagen interna
+		pars=this.vistaPrevia.getLayoutParams();
+		
+		pars.height=this.alturaWidget;
+		pars.width=this.anchuraWidget;
+		
+		this.layoutWidget.setLayoutParams(pars);
+		
+        // Actualizamos la vista previa
+		this.actualizarVistaPrevia();
     }
 
     /**
@@ -222,6 +265,7 @@ public class DesktopLabelWidgetClick extends Activity implements OnClickListener
 			case 2:
 			{
 				// Icono
+				this.icono=resultCode+1;
 				this.actualizarVistaPrevia();
 				break;
 			}
@@ -233,6 +277,32 @@ public class DesktopLabelWidgetClick extends Activity implements OnClickListener
 	 */
 	private void actualizarVistaPrevia()
 	{
-		// FIXME: Pendiente de realizar la vista previa
+		// Cogemos la etiqueta
+		String etiquetaFinal=this.etiqueta.getText().toString();
+
+		// Renderizamos todo
+		Bitmap bitmap=DesktopLabelWidgetStatic.dibujarCanvas(
+				this.contexto, this.idWidget, etiquetaFinal, this.icono, this.colorFondo, 
+				this.colorTexto, this.anchuraWidget, this.alturaWidget, this.posicionIcono);
+		
+		// Dibujamos la vista previa
+		this.vistaPrevia.setImageBitmap(bitmap);
+	}
+
+	/**
+	 * 
+	 * @param arg0
+	 * @param arg1
+	 * @param arg2
+	 * @return
+	 */
+	public boolean onKey(View vista, int arg1, KeyEvent arg2)
+	{
+		if(vista==(View)this.etiqueta)
+		{
+			// Cada vez que se cambie el texto actualizamos la vista previa
+			this.actualizarVistaPrevia();
+		}		
+		return false;
 	}
 }

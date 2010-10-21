@@ -25,6 +25,8 @@ import android.graphics.Bitmap.Config;
 import android.graphics.Paint.Style;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Display;
+import android.view.WindowManager;
 import android.widget.RemoteViews;
 
 /**
@@ -162,86 +164,10 @@ public class DesktopLabelWidgetStatic
 
 	    // Creamos el canvas sobre el que dibujaremos
 	    Utils.logDebug("Creando un canvas de "+anchura+"x"+altura+"...");
-	    
-		Paint p = new Paint();
-		p.setAntiAlias(true);
-		
-		Bitmap bitmap = Bitmap.createBitmap(anchura, altura, Config.ARGB_8888);
-		Canvas canvas = new Canvas(bitmap);
 
-		// Dibujamos el fondo
-		canvas.drawColor(Color.parseColor("#00FFFFFF"));
-		p.setColor(colorFondo);
-		canvas.drawRoundRect(new RectF(1, 1, anchura, altura), 10, 10, p);
-		
-		// Seleccionamos el recurso
-		int resIcono=1;
-		
-		     if(icono==1)  resIcono=R.drawable.icono001;
-		else if(icono==2)  resIcono=R.drawable.icono002;
-		else if(icono==3)  resIcono=R.drawable.icono003;
-		else if(icono==4)  resIcono=R.drawable.icono004;
-		else if(icono==5)  resIcono=R.drawable.icono005;
-		else if(icono==6)  resIcono=R.drawable.icono006;
-		else if(icono==7)  resIcono=R.drawable.icono007;
-		else if(icono==8)  resIcono=R.drawable.icono008;
-		else if(icono==9)  resIcono=R.drawable.icono009;
-		else if(icono==10) resIcono=R.drawable.icono010;
-		else if(icono==11) resIcono=R.drawable.icono011;
-		else if(icono==12) resIcono=R.drawable.icono012;
-		else if(icono==13) resIcono=R.drawable.icono013;
-		else if(icono==14) resIcono=R.drawable.icono014;
-		else if(icono==15) resIcono=R.drawable.icono015;
-		else if(icono==16) resIcono=R.drawable.icono016;
-		else if(icono==17) resIcono=R.drawable.icono017;
-		else if(icono==18) resIcono=R.drawable.icono018;
-		else if(icono==19) resIcono=R.drawable.icono019;
-		else if(icono==20) resIcono=R.drawable.icono020;
-		else if(icono==21) resIcono=R.drawable.icono021;
-		else if(icono==22) resIcono=R.drawable.icono022;
-		else if(icono==23) resIcono=R.drawable.icono023;
-		else if(icono==24) resIcono=R.drawable.icono024;
-		else if(icono==25) resIcono=R.drawable.icono025;
-		else if(icono==26) resIcono=R.drawable.icono026;
-		else if(icono==27) resIcono=R.drawable.icono027;
-		else if(icono==28) resIcono=R.drawable.icono028;
-		
-		// Dibujamos la imagen
-		canvas.drawBitmap(
-			BitmapFactory.decodeResource(contexto.getResources(), resIcono),
-			null, new Rect(10, 10, altura-10, altura-10), p);
-			
-		// Dibujamos el texto. Ajustaremos el tamaño de la fuente según la longitud 
-		// del texto, para que se vea bien. Podremos incluso partirlo en dos lineas
-		// si es necesario, pues ahora controlamos tan fuente como coordenadas de
-		// renderizado del texto. Tenemos el control ;)
-		p.setColor(colorTexto);
-		
-		int alturaTexto=(altura/2);
-		int grosorTexto=3;
-		
-		// FIXME: El escalado debe de ser diferente para los widgets 3x1 y 2x1
-		
-		if(etiqueta.length()>22)
-		{
-			alturaTexto=(altura/5);
-			grosorTexto=2;
-		}
-		else if(etiqueta.length()>16)
-		{
-			alturaTexto=(altura/4);
-			grosorTexto=2;
-		}
-		else if(etiqueta.length()>10)
-		{
-			alturaTexto=(altura/3);
-			grosorTexto=3;
-		}
-
-		p.setStrokeWidth(grosorTexto);
-		p.setTextSize(alturaTexto);
-		
-		canvas.drawText(etiqueta, altura, (altura/2)+(alturaTexto/2), p);
+		Bitmap bitmap=dibujarCanvas(
+			contexto, idWidget, etiqueta, icono, colorFondo, colorTexto,
+			anchura, altura, posicionIcono);
 		
 		// Establecemos el canvas
 		vistaActualizada.setImageViewBitmap(R.id.imagenWidget, bitmap);
@@ -271,6 +197,68 @@ public class DesktopLabelWidgetStatic
 	    // Actualizamos
 		Utils.logInfo("Actualizando Widget id="+idWidget+" ("+etiqueta+")...");
 		appWidgetManager.updateAppWidget(idWidget, vistaActualizada);
+	}
+
+	/**
+	 * Dibuja el canvas de forma estática
+	 */
+	public static Bitmap dibujarCanvas(
+		Context contexto, int idWidget, String etiqueta, int icono, int colorFondo,	
+		int colorTexto,	int anchura, int altura, int posicionIcono)
+	{
+		Paint p = new Paint();
+		p.setAntiAlias(true);
+		
+		Bitmap bitmap = Bitmap.createBitmap(anchura, altura, Config.ARGB_8888);
+		Canvas canvas = new Canvas(bitmap);
+
+		// Dibujamos el fondo
+		canvas.drawColor(Color.parseColor("#00FFFFFF"));
+		p.setColor(colorFondo);
+		canvas.drawRoundRect(new RectF(1, 1, anchura, altura), 10, 10, p);
+		
+		// Seleccionamos el recurso
+		int resIcono=Utils.idRecursoImagen(contexto, icono);
+		
+		// Dibujamos la imagen
+		canvas.drawBitmap(
+			BitmapFactory.decodeResource(contexto.getResources(), resIcono),
+			null, new Rect(10, 10, altura-10, altura-10), p);
+			
+		// Dibujamos el texto. Ajustaremos el tamaño de la fuente según la longitud 
+		// del texto, para que se vea bien. Podremos incluso partirlo en dos lineas
+		// si es necesario, pues ahora controlamos tan fuente como coordenadas de
+		// renderizado del texto. Tenemos el control ;)
+		p.setColor(colorTexto);
+		
+		int alturaTexto=(altura/2);
+		int grosorTexto=3;
+
+		// FIXME: Corregir según el layout del widget
+		
+		// Escalamos el texto
+		if(etiqueta.length()>(int)26)
+		{
+			alturaTexto=(altura/5);
+			grosorTexto=2;
+		}
+		else if(etiqueta.length()>(int)18)
+		{
+			alturaTexto=(altura/4);
+			grosorTexto=2;
+		}
+		else if(etiqueta.length()>(int)10)
+		{
+			alturaTexto=(altura/3);
+			grosorTexto=3;
+		}
+
+		p.setStrokeWidth(grosorTexto);
+		p.setTextSize(alturaTexto);
+		
+		canvas.drawText(etiqueta, altura, (altura/2)+(alturaTexto/2), p);
+		
+		return bitmap;
 	}
 	
 	/**
@@ -319,15 +307,15 @@ public class DesktopLabelWidgetStatic
 			//   5: Naranja, 6: Rojo, 7: Verde, 8: Transparente
 			switch(valorActual)
 			{
-				case 1:  { valorModificado=Color.WHITE; break; }
-				case 2:  { valorModificado=Color.YELLOW; break; }
-				case 3:  { valorModificado=Color.BLUE; break; }
-				case 4:  { valorModificado=Color.MAGENTA; break; }
-				case 5:  { valorModificado=Color.parseColor("#FF00FF"); break; }
-				case 6:  { valorModificado=Color.RED; break; }
-				case 7:  { valorModificado=Color.GREEN; break; }
-				case 8:  { valorModificado=Color.TRANSPARENT; break; }
-				default: { valorModificado=Color.BLACK; break; }
+				case 1:  { valorModificado=Color.BLACK; break; }
+				case 2:  { valorModificado=Color.BLACK; break; }
+				case 3:  { valorModificado=Color.WHITE; break; }
+				case 4:  { valorModificado=Color.BLACK; break; }
+				case 5:  { valorModificado=Color.BLACK; break; }
+				case 6:  { valorModificado=Color.WHITE; break; }
+				case 7:  { valorModificado=Color.WHITE; break; }
+				case 8:  { valorModificado=Color.BLACK; break; }
+				default: { valorModificado=Color.WHITE; break; }
 			}
 		}
 		else if(parametro=="Icono")

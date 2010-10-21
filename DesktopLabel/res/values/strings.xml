@@ -14,7 +14,8 @@
     <string name="icono">Icon</string>
     <string name="color_fondo">Back. color</string>
     <string name="color_texto">Text color</string>
-    <string name="escoger">Pick</string>
+    <string name="escoger_color">Pick color</string>
+    <string name="escoger_icono">Pick icon</string>
     <string name="transparente">Transparent</string>
     <string name="vacio"></string>
     <string name="sin_icono">No icon</string>

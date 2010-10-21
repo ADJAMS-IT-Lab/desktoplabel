@@ -5,8 +5,11 @@ package com.serone.desktoplabel;
 //Ver gpl.html
 
 // Imports necesarios
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+import android.view.Display;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 /**
@@ -18,6 +21,33 @@ public class Utils
 	// Configuración del log
 	public static String logFuente="Serone";
 	public static int logNivel=4; // Desde 1 (error) hasta 4 (debug), 0=desactivado
+
+    // Configuración global
+	public static String nombreBase="icono";	// Base del recurso
+	public static int ini=1;					// Número inicial de la secuencia
+	public static int fin=28;					// Número final
+	public static int numCeros=3; 				// Número de digitos (para rellenar con ceros)
+
+	/**
+	 * Devuelve el nombre de un recurso
+	 */
+	public static int idRecursoImagen(Context contexto, int numImagen)
+	{
+    	// Nombre del recurso
+    	String num=Integer.toString(numImagen+Utils.ini);
+    	String recurso="";
+    	
+    	if(num.length()<Utils.numCeros)
+    	{
+        	String ceros="";
+        	for(int n=0; n<(Utils.numCeros-num.length()); n++) ceros+="0";
+        	recurso=Utils.nombreBase+ceros+num;      		
+    	}
+    	else recurso=Utils.nombreBase+num;
+
+    	// Cogemos el ID del recurso 	
+    	return contexto.getResources().getIdentifier(recurso, "drawable", "com.serone.desktoplabel");		
+	}
 	
     /**
      * Metemos una traza de debug

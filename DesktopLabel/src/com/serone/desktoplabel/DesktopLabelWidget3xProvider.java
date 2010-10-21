@@ -58,6 +58,8 @@ public class DesktopLabelWidget3xProvider extends AppWidgetProvider
     		prefs.remove("Widget="+appWidgetIds[i]+" (ColorFondo)");
 	        prefs.remove("Widget="+appWidgetIds[i]+" (ColorTexto)");
 	        prefs.remove("Widget="+appWidgetIds[i]+" (Icono)");
+	        prefs.remove("Widget="+appWidgetIds[i]+" (Anchura)");
+	        prefs.remove("Widget="+appWidgetIds[i]+" (Altura)");
 	        
 	        prefs.commit();
     	}
